@@ -1,0 +1,27 @@
+Richard Hendricks, the famous CEO of Pied Piper from the show Silicon Valley has an unsual problem. He sits along with Gilfoyle and Dinesh, his code buddies and fellow co-founders of Pied Piper, to solve this so called "unsual" problem.
+
+
+Richard Hendricks explains the problem to Gilfoyle and Dinesh and here is an excerpt from their conversation:
+
+
+There have been several "Yes" or "No" messages in our chatting platform and I was thinking if we could possibly repesent this information in a shorter manner as we are basically a company that rose to fame for our very effective compression algorithm. Hence, I tried to represent the Yes messages by one and No messages by zero and the resulting representation was smaller, but could be much more efficiently represented. I specifically want a 4 fold decrease in the number of symbols (the number of characters in the previous case it was ones and zeros, but now it can be anything).
+
+Gilfoyle jumps out saying that the base of the representation can be changed such a way that the ones and zeros can be mapped onto a different base that's takes 4 times lesser characters than the existing base. Help Gilfoyle defend his case.
+
+Input Format : single line, containing a string made up of 0's and 1's
+
+Input Constraints : 1<= N <= 57, where N is the number of characters (0's and 1's) in the string.
+
+Output Format : Single line denoting the value of the binary string in a base that uses 4 times lesser characters than the existing base.
+
+Sample Input :
+
+10110111000010010011011001010111111000111010010010000
+Sample Output :
+
+16e126cafc7490
+
+Code:
+a=input()
+b=int(a,2)
+print(hex(b)[2:])
