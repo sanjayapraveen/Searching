@@ -1,11 +1,11 @@
-Imp is in a magic forest, where xorangles grow.
+Sathish is in a magic forest, where xorangles grow.
 A xorangle of order n is such a non-degenerate triangle, that lengths of its sides are integers not exceeding n, and the xor-sum of the lengths is equal to zero. Imp has to count the number of distinct xorangles of order n to get out of the forest.
 
 Formally, for a given integer n you have to find the number of such triples (a, b, c), that:
-
 1 ≤ a ≤ b ≤ c ≤ n;
 a xor b xor c=0, where x xor y denotes the bitwise xor of integers x and y.
 (a, b, c) form a non-degenerate (with strictly positive area) triangle.
+
 Input
 The only line contains a single integer n (1 ≤ n ≤ 2500).
 
