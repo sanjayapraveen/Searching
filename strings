@@ -1,0 +1,64 @@
+"QAQ" is a word to denote an expression of crying. Imagine "Q" as eyes with tears and "A" as a mouth.
+Now Sanjay has given Saran a string consisting of only uppercase English letters of length n. There is a great number of "QAQ" in the string (Sanjay is so cute!).
+Saran wants to know how many subsequences "QAQ" are in the string Sanjay has given. Note that the letters "QAQ" don't have to be consecutive, but the order of letters should be exact.
+Input
+The only line contains a string of length n (1 ≤ n ≤ 100). It's guaranteed that the string only contains uppercase English letters.
+Output
+Print a single integer — the number of subsequences "QAQ" in the string.
+
+Sample input:
+QAQAQYSYIOIWIN
+Sample output:
+4
+
+Code:
+MAX = 100
+def countSubsequence(s, n): 
+    cntQ = 0
+    cntA = 0
+    result = 0
+    C=0
+    for i in range(n): 
+        if (s[i] == 'Q'): 
+            cntQ += 1
+            result += C 
+            continue
+  
+        if (s[i] == 'A'): 
+            cntA += 1
+            C += cntQ 
+            continue
+        else: 
+            continue
+      
+    print(result) 
+if __name__ == '__main__': 
+    s = input()
+    n = len(s) 
+    countSubsequence(s, n) 
+    
+    
+Input
+QAQAQYSYIOIWIN
+Output
+4
+Input
+QAQQQZZYNOIWIN
+Output
+3
+Input
+QA
+Output
+0
+Input
+IAQVAQZLQBQVQFTQQQADAQJA
+Output
+24
+Input
+QQAAQASGAYAAAAKAKAQIQEAQAIAAIAQQQQQ
+Output
+378
+Input
+AMVFNFJIAVNQJWIVONQOAOOQSNQSONOASONAONQINAONAOIQONANOIQOANOQINAONOQINAONOXJCOIAQOAOQAQAQAQAQWWWAQQAQ
+Output
+1077
