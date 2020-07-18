@@ -1,0 +1,97 @@
+The winner of the card game popular in Berland "Berlogging" is determined according to the following rules. If at the end of the game there is only one player with the maximum number of points, he is the winner. The situation becomes more difficult if the number of such players is more than one. During each round a player gains or loses a particular number of points. In the course of the game the number of points is registered in the line "name score", where name is a player's name, and score is the number of points gained in this round, which is an integer number. If score is negative, this means that the player has lost in the round. So, if two or more players have the maximum number of points (say, it equals to m) at the end of the game, than wins the one of them who scored at least m points first. Initially each player has 0 points. It's guaranteed that at the end of the game at least one player has a positive number of points.
+
+Input
+The first line contains an integer number n (1  ≤  n  ≤  1000), n is the number of rounds played. Then follow n lines, containing the information about the rounds in "name score" format in chronological order, where name is a string of lower-case Latin letters with the length from 1 to 32, and score is an integer number between -1000 and 1000, inclusive.
+
+Output
+Print the name of the winner.
+
+Sample input:
+3
+mike 3
+andrew 5
+mike 2
+Sample output:
+andrew
+
+Code:
+n = int(input())
+d = {}
+li = []
+max_arr={}
+for i in range(n):
+    na, p = map(str, input().split())
+    d[na] = d.get(na, 0) + int(p)
+    li.append([na, p])
+maxm = max(d.values())
+ans = ""
+dp = {}
+for x, y in li:
+    dp[x] = dp.get(x, 0) + int(y)
+    if dp[x] >= maxm and d[x] == maxm:
+        ans = x
+        break
+print(ans)
+
+Input
+3
+andrew 3
+andrew 2
+mike 5
+Output
+andrew
+Input
+5
+kaxqybeultn -352
+mgochgrmeyieyskhuourfg -910
+kaxqybeultn 691
+mgochgrmeyieyskhuourfg -76
+kaxqybeultn -303
+Output
+kaxqybeultn
+Input
+7
+ksjuuerbnlklcfdjeyq 312
+dthjlkrvvbyahttifpdewvyslsh -983
+ksjuuerbnlklcfdjeyq 268
+dthjlkrvvbyahttifpdewvyslsh 788
+ksjuuerbnlklcfdjeyq -79
+ksjuuerbnlklcfdjeyq -593
+ksjuuerbnlklcfdjeyq 734
+Output
+ksjuuerbnlklcfdjeyq
+Input
+12
+atrtthfpcvishmqbakprquvnejr 185
+atrtthfpcvishmqbakprquvnejr -699
+atrtthfpcvishmqbakprquvnejr -911
+atrtthfpcvishmqbakprquvnejr -220
+fcgslzkicjrpbqaifgweyzreajjfdo 132
+fcgslzkicjrpbqaifgweyzreajjfdo -242
+m 177
+m -549
+atrtthfpcvishmqbakprquvnejr -242
+m 38
+atrtthfpcvishmqbakprquvnejr -761
+fcgslzkicjrpbqaifgweyzreajjfdo 879
+Output
+fcgslzkicjrpbqaifgweyzreajjfdo
+Input
+15
+aawtvezfntstrcpgbzjbf 681
+zhahpvqiptvksnbjkdvmknb -74
+aawtvezfntstrcpgbzjbf 661
+jpdwmyke 474
+aawtvezfntstrcpgbzjbf -547
+aawtvezfntstrcpgbzjbf 600
+zhahpvqiptvksnbjkdvmknb -11
+jpdwmyke 711
+bjmj 652
+aawtvezfntstrcpgbzjbf -1000
+aawtvezfntstrcpgbzjbf -171
+bjmj -302
+aawtvezfntstrcpgbzjbf 961
+zhahpvqiptvksnbjkdvmknb 848
+bjmj -735
+Output
+aawtvezfntstrcpgbzjbf
