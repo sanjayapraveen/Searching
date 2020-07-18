@@ -1,0 +1,64 @@
+Saran has a hotel consisting of 1010 rooms. The rooms are numbered from 00 to 99 from left to right.
+The hotel has two entrances — one from the left end, and another from the right end. When a customer arrives to the hotel through the left entrance, they are assigned to an empty room closest to the left entrance. Similarly, when a customer arrives at the hotel through the right entrance, they are assigned to an empty room closest to the right entrance.
+One day, Saran lost the room assignment list. Thankfully Saran's memory is perfect, and he remembers all of the customers: when a customer arrived, from which entrance, and when they left the hotel. Initially the hotel was empty. Write a program that recovers the room assignment list from Saran's memory.
+Input
+The first line consists of an integer nn (1≤n≤1051≤n≤105), the number of events in Saran's memory.
+The second line consists of a string of length nn describing the events in chronological order. Each character represents:
+•	'L': A customer arrives from the left entrance.
+•	'R': A customer arrives from the right entrance.
+•	'0', '1', ..., '9': The customer in room xx (00, 11, ..., 99 respectively) leaves.
+It is guaranteed that there is at least one empty room when a customer arrives, and there is a customer in the room xx when xx (00, 11, ..., 99) is given. Also, all the rooms are initially empty.
+Output
+In the only line, output the hotel room's assignment status, from room 00 to room 99. Represent an empty room as '0', and an occupied room as '1', without spaces.
+Sample input:
+8
+LLRL1RL1
+
+Sample output:
+4
+Code:
+n = int(input())
+room = [0 for i in range(10)]
+s = input()
+for i in s:
+	if i =='L':
+		for k in range(10):
+			if room[k]==0:
+				room[k]=1
+				break
+	elif i=='R':
+		for k in range(9,-1,-1):
+			if room[k]==0:
+				room[k]=1
+				break
+	else:
+		room[int(i)]=0
+ 
+for i in room:
+	print(i,end='')
+	
+Input
+8
+LLRL1RL1
+Output
+1010000011
+Input
+9
+L0L0LLRR9
+Output
+1100000010
+Input
+1
+L
+Output
+1000000000
+Input
+100000
+RRR789RRLR89L017RL09RL09RLR908RR9R98R9L0RR9LR8RRR9R7L861R90RR79R98LL1LRR8RLRR07LR7LRR1LL8R619L5173LLRLLL84R1692L1LLR50RL8L92L4L72143L016R9R9RR9L80RRLLRRL67RR7LL0LLR2R106R39LL5R80R9478R921RRRLRRLLL6L40RR4R60LL74L16L148529RL9L2LLR109234L0LR09L0R9LRR9L1RRL0R867R9RLLR09L0R97RR97R9R21LLLRLR2L39LRRR78RR3986LLLL6R7R2L3R6R42LR31L7RR7R876409RR23581RR8LLL0LR82RL1LRRR02L75LRLL6R356072R1L07R9R784LRR79RL901R8RR7R8RRRLR0R7354R8LR798L01R96R9RL09RRL98RL901L0L0LL0LRLL9RRL8RLLL2L6R0L06R179RRL6LR0R5R39RL3L108432R57LL...
+Output
+1000001101
+Input
+100
+R9L0L0R9R9L0R9R9L0R9R9R9L0R9R9R9L0L0R9L0R9L0L0L0R9R9L0R9L0R9R9L0R9R9L0R9L0L0R9R9R9L0L0L0L0R9L0L0L0L0
+Output
+0000000000
