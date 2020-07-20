@@ -1,0 +1,69 @@
+Recently, Sanjay found a string s=s1s2…sns=s1s2…sn consisting of nn lowercase Latin letters. As an exercise to improve his typing speed, he decided to type all substrings of the string ss. Yes, all n(n+1)2n(n+1)2 of them!
+A substring of ss is a non-empty string x=s[a…b]=sasa+1…sbx=s[a…b]=sasa+1…sb (1≤a≤b≤n1≤a≤b≤n). For example, "auto" and "ton" are substrings of "automaton".
+Shortly after the start of the exercise, Sanjay realized that his keyboard was broken, namely, he could use only kk Latin letters c1,c2,…,ckc1,c2,…,ck out of 2626.
+After that, Sanjay became interested in how many substrings of the string ss he could still type using his broken keyboard. Help him to find this number.
+Input
+The first line contains two space-separated integers nn and kk (1≤n≤2⋅1051≤n≤2⋅105, 1≤k≤261≤k≤26) — the length of the string ss and the number of Latin letters still available on the keyboard.
+The second line contains the string ss consisting of exactly nn lowercase Latin letters.
+The third line contains kk space-separated distinct lowercase Latin letters c1,c2,…,ckc1,c2,…,ck — the letters still available on the keyboard.
+Output
+Print a single number — the number of substrings of ss that can be typed using only available letters c1,c2,…,ckc1,c2,…,ck.
+
+Sample input:
+7 2
+abacaba
+a b
+Sample output:
+12
+
+Note
+In the first example Sanjay can print substrings s[1…2], s[2…3], s[1…3], s[1…1], s[2…2], s[3…3], s[5…6], s[6…7], s[5…7], s[5…5], s[6…6], s[7…7].
+
+Code:
+import sys
+ 
+table = [0]*26
+ 
+n, k = map(int, sys.stdin.readline().split())
+ 
+string = list(sys.stdin.readline().strip())
+ 
+k_list = sys.stdin.readline().split()
+result = 0
+for i in k_list:
+    table[ord(i)-97] = 1
+ 
+for j in range(n):
+    if table[ord(string[j])-97] == 1:
+        string[j] = 'a'
+    else:
+        string[j] = 'b'
+string = "".join(string)
+string = string.split('b')
+for k in string:
+    result += (len(k)*(len(k)+1))//2
+print(result)
+
+Input
+10 3
+sadfaasdda
+f a d
+Output
+21
+Input
+7 1
+aaaaaaa
+b
+Output
+0
+Input
+200 13
+vgfjhgkgwkftaeqejmbgildembgxdbskxfndwmcckjfkbeekxkgakmcjhclqsecpnkaigcxxhfghgegfadjktckftdhtifriemfifakygoesjfginnddjjklwiwlbjsgftwhtjdxmcadpvhaeddxwnmguwhetwbmffbmvdvuhecgjckddrbikgwkrfwfhdhqolidgkfm
+a b c d e f g h i j k l m
+Output
+578
+Input
+10000 24
+shmbrtplxgtitvdogsxibboinllineekgjpqsfhogtiegfwpowaolvwcaujxbqwaibragjkfxxesbjjbmvwwrcclgukqrsqucrwficsnfsdjgphsgcwdewgipsfoucddugskgwkfjauxopdscebqhwfxorussovfhqqhbefndrkekooammntaqfahnksobehdipsvjbopxqmqkppuqxorwnqcnvtdkaseflhehdxdhadhxtoxrulnaokejbrjugmlrdbnljupmxtlmanaerpcekivtvfcnqmsxccoichuevbjuewfkfvdobtachpklscnlqgbedridubnacpptlakbnjvkqvpatjjkbednisjmxxbskhmqmhdtggulipgmklcdhjqqsgsjogkwiqxpbathwrlcmljvfxthusjxxbxoxctiawkinevjunooxbiuablmtiwlrnmohfnjqdmehoivxjjtbmgavfccnsehawgxtjpvsvfknxc...
+Output
+50005000
