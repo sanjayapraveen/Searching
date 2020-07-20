@@ -1,0 +1,53 @@
+Shovels and Swords
+Polycarp plays a well-known computer game (we won't mention its name). In this game, he can craft tools of two types — shovels and swords. To craft a shovel, Polycarp spends two sticks and one diamond; to craft a sword, Polycarp spends two diamonds and one stick.
+
+Each tool can be sold for exactly one emerald. How many emeralds can Polycarp earn, if he has a sticks and b diamonds?
+
+Input
+The first line contains one integer t (1≤t≤1000) — the number of test cases.
+
+The only line of each test case contains two integers a and b (0≤a,b≤109) — the number of sticks and the number of diamonds, respectively.
+
+Output
+For each test case print one integer — the maximum number of emeralds Polycarp can earn.
+
+Sample input:
+4
+4 4
+1000000000 0
+7 15
+8 7
+
+Sample output:
+2
+0
+7
+5
+
+Code:
+for z in range(int(input())):
+    a,b = map(int,input().split())
+    print(min(a,b,(a+b)//3))
+
+Input
+2
+7 4
+1 5
+Output
+3
+1
+Input
+1
+33993 5
+Output
+5
+Input
+1
+666 666
+Output
+444
+Input
+1
+656 656
+Output
+437
