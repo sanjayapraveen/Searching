@@ -1,0 +1,58 @@
+As you could know there are no male planes nor female planes. However, each plane on Earth likes some other plane. There are n planes on Earth, numbered from 1 to n, and the plane with number i likes the plane with number f i, where 1 ≤ f i ≤ n and f i ≠ i.
+
+We call a love triangle a situation in which plane A likes plane B, plane B likes plane C and plane C likes plane A. Find out if there is any love triangle on Earth.
+
+Input
+The first line contains a single integer n (2 ≤ n ≤ 5000) — the number of planes.
+
+The second line contains n integers f 1, f 2, ..., f n (1 ≤ f i ≤ n, f i ≠ i), meaning that the i-th plane likes the f i-th.
+
+Output
+Output «YES» if there is a love triangle consisting of planes on Earth. Otherwise, output «NO».
+
+You can output any letter in lower case or in upper case.
+
+Sample input:
+5
+2 4 5 1 3
+Sample output:
+YES
+
+Code:
+n = int(input())
+f = list(map(int, input().split()))
+for i in range(n):
+    a = i
+    b = f[i] - 1
+    c = f[b] - 1
+    d = f[c] - 1
+    if d == a and a != b and b != c and c != d:
+        print("YES")
+        exit()
+print("NO")
+
+Input
+5
+5 5 5 5 1
+Output
+NO
+Input
+3
+3 1 2
+Output
+YES
+Input
+10
+4 10 9 5 3 1 5 10 6 4
+Output
+NO
+Input
+10
+5 5 4 9 10 9 9 5 3 1
+Output
+YES
+Input
+5
+2 1 4 5 3
+Output
+YES
