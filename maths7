@@ -1,0 +1,64 @@
+Vasya has found a strange device. On the front panel of a device there are: a red button, a blue button and a display showing some positive integer. After clicking the red button, device multiplies the displayed number by two. After clicking the blue button, device subtracts one from the number on the display. If at some point the number stops being positive, the device breaks down. The display can show arbitrarily large numbers. Initially, the display shows number n.
+
+Bob wants to get number m on the display. What minimum number of clicks he has to make in order to achieve this result?
+
+Input
+The first and the only line of the input contains two distinct integers n and m (1 ≤ n, m ≤ 104), separated by a space .
+
+Output
+Print a single number — the minimum number of times one needs to push the button required to get the number m out of number n.
+
+Sample input:
+4 6
+Sample output:
+2
+
+Code:
+def get_step(n, m):
+    step = 0
+ 
+    while m > n:
+        if m % 2 == 0:
+            m //= 2
+ 
+        else:
+            m += 1
+ 
+        step += 1
+ 
+    if m == n:
+        return step
+ 
+    else:
+        return step + n - m
+ 
+ 
+ 
+if __name__ == "__main__":
+    n, m = input().split(" ")
+ 
+    n = int(n)
+    m = int(m)
+ 
+    print(get_step(n, m))
+
+Input
+10 1
+Output
+9
+Input
+1 2
+Output
+1
+Input
+2 10
+Output
+5
+Input
+100 99
+Output
+1
+Input
+99 100
+Output
+50
