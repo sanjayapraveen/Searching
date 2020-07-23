@@ -1,0 +1,40 @@
+Petr stands in line of n people, but he doesn't know exactly which position he occupies. He can say that there are no less than a people standing in front of him and no more than b people standing behind him. Find the number of different positions Petr can occupy.
+
+Input
+The only line contains three integers n, a and b (0 ≤ a, b < n ≤ 100).
+
+Output
+Print the single number — the number of the sought positions.
+
+Sample input:
+3 1 1
+Sample output:
+2
+
+Code:
+n,a,b = input().split()
+n = int(n)
+a = int(a)
+b = int(b)
+print(n+1-max(a+1,n-b))
+
+Input
+5 2 3
+Output
+3
+Input
+5 4 0
+Output
+1
+Input
+6 5 5
+Output
+1
+Input
+9 4 3
+Output
+4
+Input
+11 4 6
+Output
+7
