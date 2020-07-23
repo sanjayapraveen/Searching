@@ -1,0 +1,130 @@
+Vova had a pretty weird sleeping schedule. There are h hours in a day. Vova will sleep exactly n times. The i-th time he will sleep exactly after ai hours from the time he woke up. You can assume that Vova woke up exactly at the beginning of this story (the initial time is 0). Each time Vova sleeps exactly one day (in other words, h hours).
+
+Vova thinks that the i-th sleeping time is good if he starts to sleep between hours l and r inclusive.
+
+Vova can control himself and before the i-th time can choose between two options: go to sleep after ai hours or after ai−1 hours.
+
+Your task is to say the maximum number of good sleeping times Vova can obtain if he acts optimally.
+
+Input
+The first line of the input contains four integers n,h,l and r (1≤n≤2000,3≤h≤2000,0≤l≤r<h) — the number of times Vova goes to sleep, the number of hours in a day and the segment of the good sleeping time.
+
+The second line of the input contains n integers a1,a2,…,an (1≤ai<h), where ai is the number of hours after which Vova goes to sleep the i-th time.
+
+Output
+Print one integer — the maximum number of good sleeping times Vova can obtain if he acts optimally.
+
+Sample input:
+7 24 21 23
+16 17 14 20 20 11 22
+Sample output:
+3
+
+Code:
+import os
+import sys
+from io import BytesIO, IOBase
+ 
+BUFSIZE = 8192
+ 
+class FastIO(IOBase):
+    newlines = 0
+    def __init__(self, file):
+        self._fd = file.fileno()
+        self.buffer = BytesIO()
+        self.writable = "x" in file.mode or "r" not in file.mode
+        self.write = self.buffer.write if self.writable else None
+ 
+    def read(self):
+        while True:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            if not b:
+                break
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines = 0
+        return self.buffer.read()
+ 
+    def readline(self):
+        while self.newlines == 0:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            self.newlines = b.count(b"\n") + (not b)
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines -= 1
+        return self.buffer.readline()
+ 
+    def flush(self):
+        if self.writable:
+            os.write(self._fd, self.buffer.getvalue())
+            self.buffer.truncate(0), self.buffer.seek(0)
+ 
+ 
+class IOWrapper(IOBase):
+    def __init__(self, file):
+        self.buffer = FastIO(file)
+        self.flush = self.buffer.flush
+        self.writable = self.buffer.writable
+        self.write = lambda s: self.buffer.write(s.encode("ascii"))
+        self.read = lambda: self.buffer.read().decode("ascii")
+        self.readline = lambda: self.buffer.readline().decode("ascii")
+ 
+ 
+sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
+input = lambda: sys.stdin.readline().rstrip("\r\n")
+ 
+# ------------------- fast io --------------------
+ 
+n,h,l,r=map(int,input().split())
+vals=list(map(int,input().split()))
+good=[[0]]
+v1=0
+for j in range(n):
+    v1+=vals[j]
+    v1=v1%h
+    lg=good[-1]
+    g2=good[-1]+[]
+    for b in range(j+1):
+        if b==0:
+            if l<=v1 and v1<=r:
+                g2[0]+=1
+        else:
+            val1=lg[b-1]
+            val2=lg[b]
+            if l<=(v1-b)%h and (v1-b)%h<=r:
+                val2+=1
+                val1+=1
+            g2[b]=max(val1,val2)
+    if l<=(v1-(j+1))%h and (v1-(j+1))%h<=r:
+        g2.append(1+lg[-1])
+    else:
+        g2.append(lg[-1])       
+    good.append(g2)
+last=good[-1]
+print(max(last))
+
+Input
+65 654 560 571
+83 511 615 263 171 146 241 511 582 216 352 632 506 538 536 217 627 213 324 579 172 241 363 584 450 144 447 536 241 523 162 21 437 291 191 111 567 502 170 570 231 493 169 360 107 114 322 160 574 611 460 558 616 361 284 58 41 345 450 560 543 520 105 416 38
+Output
+2
+Input
+2 24 21 22
+23 1
+Output
+2
+Input
+5 3 0 0
+1 1 1 1 1
+Output
+5
+Input
+7 250 21 23
+16 17 14 20 20 11 22
+Output
+0
+Input
+29 425 46 81
+405 237 24 45 165 328 134 309 7 236 348 204 368 396 298 343 180 186 395 246 44 53 303 404 271 344 269 292 12
+Output
+2
