@@ -35,7 +35,14 @@ Sample output:
 4
 0
 3
+Note
+The first test case is described in the statement.
 
+In the second test case, the government, for example, could carry out two reforms: [11–––,9–,11,9]→[10,10,11–––,9–]→[10,10,10,10].
+
+In the third test case, the government couldn't make even one person wealthy.
+
+In the fourth test case, the government could choose all people to carry out a reform: [9–,4–,9–]→[713,713,713].
 Code:
 
 for _ in range(int(input())):
