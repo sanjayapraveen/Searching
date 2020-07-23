@@ -1,0 +1,80 @@
+Many years ago Berland was a small country where only n people lived. Each person had some savings: the i-th one had ai burles.
+
+The government considered a person as wealthy if he had at least x burles. To increase the number of wealthy people Berland decided to carry out several reforms. Each reform looked like that:
+
+the government chooses some subset of people (maybe all of them);
+the government takes all savings from the chosen people and redistributes the savings among the chosen people equally.
+For example, consider the savings as list [5,1,2,1]: if the government chose the 1-st and the 3-rd persons then it, at first, will take all 5+2=7 burles and after that will return 3.5 burles to the chosen people. As a result, the savings will become [3.5,1,3.5,1].
+
+A lot of data was lost from that time, so we don't know how many reforms were implemented and to whom. All we can do is ask you to calculate the maximum possible number of wealthy people after several (maybe zero) reforms.
+
+Input
+The first line contains single integer T (1≤T≤1000) — the number of test cases.
+
+Next 2T lines contain the test cases — two lines per test case. The first line contains two integers n and x (1≤n≤105, 1≤x≤109) — the number of people and the minimum amount of money to be considered as wealthy.
+
+The second line contains n integers a1,a2,…,an (1≤ai≤109) — the initial savings of each person.
+
+It's guaranteed that the total sum of n doesn't exceed 105.
+
+Output
+Print T integers — one per test case. For each test case print the maximum possible number of wealthy people after several (maybe zero) reforms.
+
+Sample input:
+4
+4 3
+5 1 2 1
+4 10
+11 9 11 9
+2 5
+4 3
+3 7
+9 4 9
+Sample output:
+2
+4
+0
+3
+
+Code:
+
+for _ in range(int(input())):
+    n, x = list(map(int, input().split()))
+    a = sorted(list(map(int, input().split())))[::-1]
+    p, q = 0,0
+    for i in range(len(a)):
+        p += a[i]
+        if p /(i+1) >= x:
+            q += 1
+    print(q)
+    
+Input
+1
+100000 600516454
+686507844 10368556 723806986 978667537 349475907 745710768 123325390 213750546 710681395 224597439 599527652 823363748 714421445 574723901 566028014 784629487 881243311 242615733 401340884 211666175 953972265 109502166 989738816 400876355 581596273 811526129 546548002 63391761 878255431 119876733 632544300 108177440 379827057 743295124 382797398 931491596 585713977 42054515 293230939 841553365 594145514 603907582 931359035 959768416 939445078 244055353 21282487 277715701 328341075 7521...
+Output
+79713
+Input
+1
+100000 499152662
+33363323 350638970 633815299 241769841 890377741 718172803 861907002 671629906 401214282 670788258 17591795 47074896 832582131 474688386 234192232 345088799 816230751 871963009 427522986 388637289 850751477 396750387 431432219 626674250 225919925 102375645 597462260 6020050 709979824 769781499 298758080 295765895 554772875 620085434 919419871 211992544 659396609 331825534 902648580 776463307 701228382 322406494 74468792 912823591 170836228 630024867 684891092 297207115 95284458 9444403...
+Output
+99995
+Input
+1
+1 2
+13
+Output
+1
+Input
+1
+100000 1000000000
+100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000...
+Output
+0
+Input
+1
+100000 1
+2 4 2 4 2 4 2 4 2 4 2 10 3 11 3 14 2 18 3 19 3 22 3 26 5 27 3 34 8 35 3 38 3 42 12 43 13 46 2 50 16 54 17 58 6 59 20 62 21 66 8 67 3 74 25 75 3 78 3 82 29 83 12 86 32 90 33 91 14 98 36 99 37 102 16 106 40 107 7 110 18 114 3 118 23 122 19 123 48 126 9 130 15 131 52 138 53 139 25 142 56 146 57 147 31 150 60 154 3 155 7 162 64 163 65 166 6 170 15 171 69 174 33 178 72 182 73 186 36 187 5 190 77 194 28 79 80 39 20 55 40 26 30 41 47 28 42 22 88 44 89 11 43 51 92 46 93 94 47 3 96 3 97 29 10 68 100 50...
+Output
+100000
