@@ -72,8 +72,7 @@ class IOWrapper(IOBase):
  
 sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
 input = lambda: sys.stdin.readline().rstrip("\r\n")
- 
-# ------------------- fast io --------------------
+
  
 n,h,l,r=map(int,input().split())
 vals=list(map(int,input().split()))
