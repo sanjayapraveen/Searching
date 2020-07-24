@@ -1,0 +1,40 @@
+Memory is now interested in the de-evolution of objects, specifically triangles. He starts with an equilateral triangle of side length x, and he wishes to perform operations to obtain an equilateral triangle of side length y.
+
+In a single second, he can modify the length of a single side of the current triangle such that it remains a non-degenerate triangle (triangle of positive area). At any moment of time, the length of each side should be integer.
+
+What is the minimum number of seconds required for Memory to obtain the equilateral triangle of side length y?
+
+Input
+The first and only line contains two integers x and y (3 ≤ y < x ≤ 100 000) — the starting and ending equilateral triangle side lengths respectively.
+
+Output
+Print a single integer — the minimum number of seconds required for Memory to obtain the equilateral triangle of side length y if he starts with the equilateral triangle of side length x.
+
+Sample input:
+6 3
+Sample output:
+4
+Note:
+An equilateral triangle of side length 6 and wants one of side length 3. Denote a triangle with sides a, b, and c as (a, b, c).(6,6,6)->(6,6,3)->(6,4,3)->(3,4,3)->(3,3,3)
+
+Code:
+x,y = map(int,input().split())
+ 
+turn = 0
+a = b = c = y
+ 
+while True:
+    if a >= x and b >= x and c >= x:
+        print(turn)
+        break
+ 
+ 
+ 
+    if turn % 3 == 0:
+        a = b + c - 1
+    if turn % 3 == 1:
+        b = a + c - 1
+    if turn % 3 == 2:
+        c = a + b - 1
+ 
+    turn += 1
