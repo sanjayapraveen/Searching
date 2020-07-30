@@ -1,0 +1,85 @@
+Let LCM(x,y) be the minimum positive integer that is divisible by both x and y. For example, LCM(13,37)=481, LCM(9,6)=18.
+
+You are given two integers l and r. Find two integers x and y such that l≤x<y≤r and l≤LCM(x,y)≤r.
+Input
+The first line contains one integer t (1≤t≤10000) — the number of test cases.
+
+Each test case is represented by one line containing two integers l and r (1≤l<r≤109).
+
+Output
+For each test case, print two integers:
+
+if it is impossible to find integers x and y meeting the constraints in the statement, print two integers equal to −1;
+otherwise, print the values of x and y (if there are multiple valid answers, you may print any of them).
+
+Sample input:
+4
+1 1337
+13 69
+2 4
+88 89
+Sample output:
+6 7
+14 21
+2 4
+-1 -1
+
+Code:
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+void solve()
+{
+    ll l, r;
+    cin >> l >> r;
+    if (l * 2 > r)
+        cout << "-1 -1\n";
+    else
+        cout << l << " " << l * 2 << endl;
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+ 
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+}
+
+Input
+1
+55556 55557
+Output
+-1 -1
+Input
+5
+2 4
+2 4
+2 4
+2 4
+2 4
+Output
+2 4
+2 4
+2 4
+2 4
+2 4
+Input
+1
+78788 157576
+Output
+78788 157576
+Input
+1
+8743 17489
+Output
+8743 17486
+Input
+1
+1000003 100000000
+Output
+1000003 2000006
