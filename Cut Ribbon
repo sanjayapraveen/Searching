@@ -1,0 +1,66 @@
+Polycarpus has a ribbon, its length is n. He wants to cut the ribbon in a way that fulfils the following two conditions:
+
+After the cutting each ribbon piece should have length a, b or c.
+After the cutting the number of ribbon pieces should be maximum.
+Help Polycarpus and find the number of ribbon pieces after the required cutting.
+
+Input
+The first line contains four space-separated integers n, a, b and c (1 ≤ n, a, b, c ≤ 4000) — the length of the original ribbon and the acceptable lengths of the ribbon pieces after the cutting, correspondingly. The numbers a, b and c can coincide.
+
+Output
+Print a single number — the maximum possible number of ribbon pieces. It is guaranteed that at least one correct ribbon cutting exists.
+
+SAMPLE INPUT:
+5 5 3 2
+Sample output:
+2
+
+Code:
+import sys
+input = sys.stdin.readline
+def inp():
+	return(int(input()))
+def inlt():
+	return(list(map(int,input().split())))
+def insr():
+	s = input()
+	return(s[:len(s)-1])
+def invr():
+	return(map(int,input().split()))
+# list1, list2 = zip(*sorted(zip(list1, list2)))
+n,a,b,c = invr()
+x = min(a,b,c)
+y = max(a,b,c)
+z = a+b+c-x-y
+dp = {}
+dp[0] = (0,0,0)
+for i in range(x,n+1):
+	if i-x in dp and (i not in dp or sum(dp[i])<sum(dp[i-x])+1):
+		dp[i] = (dp[i-x][0]+1,dp[i-x][1],dp[i-x][2])
+	if i-z in dp and (i not in dp or sum(dp[i])<sum(dp[i-z])+1):
+		dp[i] = (dp[i-z][0],dp[i-z][1],dp[i-z][2]+1)
+	if i-y in dp and (i not in dp or sum(dp[i])<sum(dp[i-y])+1):
+		dp[i] = (dp[i-y][0],dp[i-y][1]+1,dp[i-y][2])
+
+print(sum(dp[n]))
+
+Input
+4 4 4 4
+Output
+1
+Input
+4000 1 2 3
+Output
+4000
+Input
+4000 3 4 5
+Output
+1333
+Input
+10 3 4 5
+Output
+3
+Input
+100 23 15 50
+Output
+2
