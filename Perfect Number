@@ -1,0 +1,144 @@
+We consider a positive integer perfect, if and only if the sum of its digits is exactly 10. Given a positive integer k, your task is to find the k-th smallest perfect positive integer.
+
+Input
+A single line with a positive integer k (1≤k≤10000).
+
+Output
+A single number, denoting the k-th smallest perfect integer.
+
+Sample input:
+1
+Sampla output:
+19
+
+Code:
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.lang.ref.Reference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.StringTokenizer;
+ 
+public class Main {
+	
+	static MyScanner input;
+	static PrintWriter out;
+	
+	public static void main(String[] args) {
+		input = new MyScanner();
+		out = new PrintWriter(new BufferedOutputStream(System.out));
+		int T;
+//		T = input.nextInt();
+		Solver solver = new Main().new Solver();
+//		while(T > 0) {
+			solver.solve();
+//			--T;
+//		}
+		out.close();
+	}
+	
+	private class Solver {
+		
+		public void solve() {
+			int k;
+			k = input.nextInt();
+			int cn = 0;
+			int n = 19;
+			while(true) {
+				int tmp = n;
+				int sum = 0;
+				while(tmp > 0) {
+					sum += tmp%10;
+					tmp /= 10;
+				}
+				if(sum == 10) cn++;
+				if(cn == k) break;
+				n++;
+			}
+			out.println(n);
+		}
+	}
+	
+	void sort(int[] a) {
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i:a) {
+			list.add(i);
+		}
+		Collections.sort(list);
+		for (int i = 0; i < a.length; i++) { 
+			a[i]=list.get(i);
+		}
+	}
+	
+	
+	public static class MyScanner {
+		BufferedReader buffRead;
+		StringTokenizer strTok;
+		
+		public MyScanner() {
+			buffRead = new BufferedReader(new InputStreamReader(System.in));
+		}
+		
+		String next() {
+			while(strTok == null || !strTok.hasMoreElements()) {
+				try {
+					strTok = new StringTokenizer(buffRead.readLine());
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return strTok.nextToken();
+		}
+		
+		int nextInt() {
+			return Integer.parseInt(next());
+		}
+		
+		long nextLong() {
+			return Long.parseLong(next());
+		}
+		
+		double nextDouble() {
+			return Double.parseDouble(next());
+		}
+		
+		String nextLine() {
+			String str = "";
+			try {
+				str = buffRead.readLine();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			return str;
+		}
+	}
+	
+}
+
+Input
+2
+Output
+28
+Input
+13
+Output
+136
+Input
+101
+Output
+1432
+Input
+1023
+Output
+100270
+Input
+9999
+Output
+10800010
