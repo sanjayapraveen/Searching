@@ -1,0 +1,83 @@
+User ainta has a stack of n red and blue balls. He can apply a certain operation which changes the colors of the balls inside the stack.
+
+While the top ball inside the stack is red, pop the ball from the top of the stack.
+Then replace the blue ball on the top with a red ball.
+And finally push some blue balls to the stack until the stack has total of n balls inside.
+ 
+If there are no blue balls inside the stack, ainta can't apply this operation. Given the initial state of the stack, ainta wants to know the maximum number of operations he can repeatedly apply.
+
+Input
+The first line contains an integer n (1 ≤ n ≤ 50) — the number of balls inside the stack.
+
+The second line contains a string s (|s| = n) describing the initial state of the stack. The i-th character of the string s denotes the color of the i-th ball (we'll number the balls from top to bottom of the stack). If the character is "R", the color is red. If the character is "B", the color is blue.
+
+Output
+Print the maximum number of operations ainta can repeatedly apply.
+
+Please, do not write the %lld specifier to read or write 64-bit integers in С++. It is preferred to use the cin, cout streams or the %I64d specifier.
+
+Sample input:
+3
+RBR
+Sample output:
+2
+
+Code:
+#include <stack>
+#include <string>
+#include <cstdio>
+#include <vector>
+#include <queue>
+#include <cmath>
+#include <cstdlib>
+#include <stdio.h>
+#include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+string s;
+long long n,a[110],b[110],c,d;
+int main()
+{
+    scanf("%lld",&n);
+    cin >> s;
+    for (int i=0;i<=s.length()-1;++i)
+        if (s[i] == 'R') a[i] = 1;
+        else a[i] = 0;
+    for (int i=0;i<=s.length()-1;++i)
+        b[i] = 1;
+    for (int i=0;i<=s.length()-1;++i)
+        {
+            c += a[i] * pow(2,i);
+            d += b[i] * pow(2,i);
+        }
+    printf("%lld",d-c);
+    return 0;
+}
+
+Input
+4
+RBBR
+Output
+6
+Input
+5
+RBBRR
+Output
+6
+Input
+5
+RBRBR
+Output
+10
+Input
+10
+RRBRRBBRRR
+Output
+100
+Input
+20
+BRBRRRRRRRRRRRRRRRRR
+Output
+5
