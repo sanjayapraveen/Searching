@@ -1,0 +1,94 @@
+You are given two positive integers a and b. In one move you can increase a by 1 (replace a with a+1). Your task is to find the minimum number of moves you need to do in order to make a divisible by b. It is possible, that you have to make 0 moves, as a is already divisible by b. You have to answer t independent test cases.
+
+Input
+The first line of the input contains one integer t (1≤t≤104) — the number of test cases. Then t test cases follow.
+
+The only line of the test case contains two integers a and b (1≤a,b≤109).
+
+Output
+For each test case print the answer — the minimum number of moves you need to do in order to make a divisible by b.
+
+Input
+1
+100 9090
+Output
+8990
+
+Code:
+for _ in range(int(input())):
+    a, b = map(int, input().split())
+    print((a + b - 1) // b * b - a)
+
+inpit:
+5
+10 4
+13 9
+100 13
+123 456
+92 46
+output:
+2
+5
+4
+333
+0
+Input
+21
+1 3218
+28 10924
+908802 141084
+82149 9274
+893257 10248
+2750048 802705
+2857 142
+980 209385
+1 3218
+28 10924
+908802 141084
+82149 9274
+893257 10248
+2750048 802705
+2857 142
+980 209385
+1 3218
+28 10924
+908802 141084
+82149 9274
+893257 10248
+Output
+3217
+10896
+78786
+1317
+8567
+460772
+125
+208405
+3217
+10896
+78786
+1317
+8567
+460772
+125
+208405
+3217
+10896
+78786
+1317
+8567
+Input
+1
+9986 1
+Output
+0
+Input
+1
+515151 2
+Output
+1
+Input
+1
+100 9090
+Output
+8990
