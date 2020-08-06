@@ -1,0 +1,58 @@
+You are given two positive integers a and b. In one move you can increase a by 1 (replace a with a+1). Your task is to find the minimum number of moves you need to do in order to make a divisible by b. It is possible, that you have to make 0 moves, as a is already divisible by b. You have to answer t independent test cases.
+
+Input
+The first line of the input contains one integer t (1≤t≤104) — the number of test cases. Then t test cases follow.
+
+The only line of the test case contains two integers a and b (1≤a,b≤109).
+
+Output
+For each test case print the answer — the minimum number of moves you need to do in order to make a divisible by b.
+Sample input:
+2
+
+Sample output:
+I hate that I love it
+
+Code:
+#include <stdio.h>
+ 
+int main() {
+    int n;
+    scanf("%d", &n);
+    for(int i = 1; i <= n; i++){
+        if(i%2){
+            printf ("I hate ");
+        }
+        else{
+            printf ("I love ");
+        }
+        if(i == n){
+            printf ("it\n");
+        }
+        else{
+            printf ("that ");
+        }
+    }
+    return 0;
+}
+
+Input
+4
+Output
+I hate that I love that I hate that I love it
+Input
+5
+Output
+I hate that I love that I hate that I love that I hate it
+Input
+10
+Output
+I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love it
+Input
+18
+Output
+I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love it
+Input
+19
+Output
+I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate that I love that I hate it
