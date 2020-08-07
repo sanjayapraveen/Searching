@@ -1,0 +1,73 @@
+Vanya and his friends are walking along the fence of height h and they do not want the guard to notice them. In order to achieve this the height of each of the friends should not exceed h. If the height of some person is greater than h he can bend down and then he surely won't be noticed by the guard. The height of the i-th person is equal to a i.
+
+Consider the width of the person walking as usual to be equal to 1, while the width of the bent person is equal to 2. Friends want to talk to each other while walking, so they would like to walk in a single row. What is the minimum width of the road, such that friends can walk in a row and remain unattended by the guard?
+
+Input
+The first line of the input contains two integers n and h (1 ≤ n ≤ 1000, 1 ≤ h ≤ 1000) — the number of friends and the height of the fence, respectively.
+
+The second line contains n integers a i (1 ≤ a i ≤ 2h), the i-th of them is equal to the height of the i-th person.
+
+Output
+Print a single integer — the minimum possible valid width of the road.
+Sample input:
+3 7
+4 5 14
+Sample output:
+4
+Note
+In the first sample, only person number 3 must bend down, so the required width is equal to 1 + 1 + 2 = 4.
+
+In the second sample, all friends are short enough and no one has to bend, so the width 1 + 1 + 1 + 1 + 1 + 1 = 6 is enough.
+
+In the third sample, all the persons have to bend, except the last one. The required minimum width of the road is equal to 2 + 2 + 2 + 2 + 2 + 1 = 11.
+
+Code:
+#include<iostream>
+#include<string>
+using namespace std;
+int main(){
+	int n;
+	cin>>n;
+	int h;
+	cin>>h;
+	int arr[n];
+	int res=0;
+	for(int i=0;i<n;i++){
+		cin>>arr[i];
+	}
+	for(int i=0;i<n;i++){
+		if(arr[i]>h){
+			res+=2;
+		}else{
+			res+=1;
+		}
+	}
+	cout<<res;
+	return 0;
+}
+
+Input
+6 1
+1 1 1 1 1 1
+Output
+6
+Input
+6 5
+7 6 8 9 10 5
+Output
+11
+Input
+10 420
+214 614 297 675 82 740 174 23 255 15
+Output
+13
+Input
+10 561
+657 23 1096 487 785 66 481 554 1000 821
+Output
+15
+Input
+100 342
+478 143 359 336 162 333 385 515 117 496 310 538 469 539 258 676 466 677 1 296 150 560 26 213 627 221 255 126 617 174 279 178 24 435 70 145 619 46 669 566 300 67 576 251 58 176 441 564 569 194 24 669 73 262 457 259 619 78 400 579 222 626 269 47 80 315 160 194 455 186 315 424 197 246 683 220 68 682 83 233 290 664 273 598 362 305 674 614 321 575 362 120 14 534 62 436 294 351 485 396
+Output
+144
