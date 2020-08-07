@@ -1,0 +1,127 @@
+You are given a broken clock. You know, that it is supposed to show time in 12- or 24-hours HH:MM format. In 12-hours format hours change from 1 to 12, while in 24-hours it changes from 0 to 23. In both formats minutes change from 0 to 59.
+
+You are given a time in format HH:MM that is currently displayed on the broken clock. Your goal is to change minimum number of digits in order to make clocks display the correct time in the given format.
+
+For example, if 00:99 is displayed, it is enough to replace the second 9 with 3 in order to get 00:39 that is a correct time in 24-hours format. However, to make 00:99 correct in 12-hours format, one has to change at least two digits. Additionally to the first change one can replace the second 0 with 1 and obtain 01:39.
+
+Input
+The first line of the input contains one integer 12 or 24, that denote 12-hours or 24-hours format respectively.
+
+The second line contains the time in format HH:MM, that is currently displayed on the clock. First two characters stand for the hours, while next two show the minutes.
+
+Output
+The only line of the output should contain the time in format HH:MM that is a correct time in the given format. It should differ from the original in as few positions as possible. If there are many optimal solutions you can print any of them.
+
+Sample input:
+24
+17:30
+Sample output:
+17:30
+
+Code:
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/priority_queue.hpp>
+using namespace std;
+using ll = long long;
+using ld = long double;
+using vi = vector<int>;
+using pi = pair<int, int>;
+using pll = pair<ll, ll>;
+constexpr int INF = 0x3f3f3f3f; constexpr ll LLINF = 0x3f3f3f3f3f3f3f3f; constexpr ld LDINF = numeric_limits<ld>::max();
+#ifdef __MINGW32__
+inline int getchar_unlocked() { return _getchar_nolock(); }
+inline int putchar_unlocked(int c) { return _putchar_nolock(c); }
+#endif
+#define gc getchar_unlocked()
+#define pc(x) putchar_unlocked(x)
+template<typename T> void scan(T &x){x = 0;bool _=0; T c=gc;_=c==45;c=_?gc:c;while(c<48||c>57)c=gc;for(;c<48||c>57;c=gc);for(;c>47&&c<58;c=gc)x=(x<<3)+(x<<1)+(c&15);x=_?-x:x;}
+template<typename T> void printn(T n){bool _=0;_=n<0;n=_?-n:n;char snum[65];int i=0;do{snum[i++]=n%10+48;n/= 10;}while(n);--i;if (_)pc(45);while(i>=0)pc(snum[i--]);}
+template<typename First, typename ... Ints> void scan(First &arg, Ints&... rest){scan(arg);scan(rest...);}
+template<typename T> void print(T n){printn(n);pc(10);}
+template<typename First, typename ... Ints> void print(First arg, Ints... rest){printn(arg);pc(32);print(rest...);}
+#define db(x)       { cerr << #x << " = " << x << endl; }
+template <typename T> void _dbarr(T* a, size_t sz){ for(int i = 0; i < sz; i++) cerr << a[i] << " \n"[i == sz-1]; }
+template <typename T> void _dbarr(vector<T> a, size_t sz){ for(int i = 0; i < sz; i++) cerr << a[i] << " \n"[i == sz-1]; }
+#define dbarr(x, n) {cerr << #x << ": "; _dbarr((x),(n));}
+#define pb push_back
+#define eb emplace_back
+ 
+ 
+int main() 
+{
+	cin.tie(0)->sync_with_stdio(0);
+	int t;
+	cin >> t;
+	string s;
+	cin >> s;
+	
+	int ans = 0;
+	if(t == 12)
+	{
+		string fs = s.substr(0,2), ls = s.substr(3,2);
+		//db(fs) db(ls)
+		
+		int h = stoi(fs);
+		if(h > 12 || h == 0)
+		{
+			if(fs[1]-'0' == 0)
+				fs[0] = '1';
+			else
+				fs[0] = '0';
+		}
+		if((ls[0] - '0') >= 6)
+		{
+			ls[0] = '0';
+		}
+		
+		cout << fs << ":" << ls << "\n";
+		
+	}
+	else
+	{
+		string fs = s.substr(0,2), ls = s.substr(3,2);
+				int h = stoi(fs);
+ 
+		if(h >= 24)
+		{
+			if(fs[1]-'0' == 0)
+				fs[0] = '1';
+			else
+				fs[0] = '0';
+		}
+		if((ls[0] - '0') >= 6)
+		{
+			ls[0] = '0';
+		}
+		
+		cout << fs << ":" << ls << "\n";
+	}
+}
+
+Input
+12
+17:30
+Output
+07:30
+Input
+24
+99:99
+Output
+09:09
+Input
+12
+00:05
+Output
+10:05
+Input
+12
+03:77
+Output
+03:07
+Input
+12
+07:74
+Output
+07:04
