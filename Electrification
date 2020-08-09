@@ -1,0 +1,123 @@
+At first, there was a legend related to the name of the problem, but now it's just a formal statement.
+
+You are given n points a1,a2,…,an on the OX axis. Now you are asked to find such an integer point x on OX axis that fk(x) is minimal possible.
+
+The function fk(x) can be described in the following way:
+
+form a list of distances d1,d2,…,dn where di=|ai−x| (distance between ai and x);
+sort list d in non-descending order;
+take dk+1 as a result.
+If there are multiple optimal answers you can print any of them.
+
+Input
+The first line contains single integer T (1≤T≤2⋅105) — number of queries. Next 2⋅T lines contain descriptions of queries. All queries are independent.
+
+The first line of each query contains two integers n, k (1≤n≤2⋅105, 0≤k<n) — the number of points and constant k.
+
+The second line contains n integers a1,a2,…,an (1≤a1<a2<⋯<an≤109) — points in ascending order.
+
+It's guaranteed that ∑n doesn't exceed 2⋅105.
+
+Output
+Print T integers — corresponding points x which have minimal possible value of fk(x). If there are multiple answers you can print any of them.
+
+Sample input:
+3
+3 2
+1 2 5
+2 1
+1 1000000000
+1 0
+4
+Sample output:
+3
+500000000
+4
+
+Code:
+#include<bits/stdc++.h> 
+using namespace std; 
+ 
+#define rep(i,a,b) for(ll i=a;i<b;i++)
+#define pb push_back
+#define lcm(a,b)     (a*b)/__gcd(a,b)
+#define bs(v,x)      binary_search(v.begin(),v.end(),x)
+#define ub(v,x)      upper_bound(v.begin(),v.end(),x)
+#define lb(v,x)      lower_bound(v.begin(),v.end(),x)
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define all(a) (a).begin(),(a).end() 
+#define trace(v) for(auto it=v.begin();it!=v.end();it++)cout<<*it<<" ";cerr<<endl;
+#define Pi 3.14159265
+#define reset(x) memset(x,'z',sizeof(x))
+#define f first
+#define s second
+#define mp make_pair
+#define PII pair<ll, ll> 
+#define pq1 priority_queue<ll>
+#define pq2 priority_queue<ll, vector<ll>,greater<ll>>
+typedef long long ll;
+typedef vector<ll> vll;
+typedef bool B;
+typedef double ff;
+const ll INF=1e10;
+const ll N = 100001;
+char en='\n';
+ 
+         void solve()
+         {
+            ll n,k; cin>>n>>k;
+            ll a[n+1]={},b[n+1]={};
+            rep(i,1,n+1)
+            cin>>a[i];
+            sort(a+1,a+n+1);
+            if(k==0)
+               cout<<a[1];
+            else{
+                  ll ans=k+1;
+                  for(ll i=k+1;i<=n;i++)
+                  {
+                    if(a[i]-a[i-k]<a[ans]-a[ans-k])
+                     ans=i;
+                  }
+                  cout<<(a[ans]+a[ans-k])/2;
+               }
+         } 
+         int main() 
+         { 
+            ios_base::sync_with_stdio(false);cin.tie(NULL); 
+            
+            #ifndef ONLINE_JUDGE 
+            freopen("input.txt", "r", stdin); 
+            freopen("error.txt", "w", stderr); 
+            freopen("output.txt", "w", stdout); 
+            #endif   
+            int t=1; 
+            cin>>t; 
+            while(t--) 
+            { 
+               solve(); 
+               cout<<"\n"; 
+            } 
+            
+            cerr<<"time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl; 
+            return 0; 
+         }
+         
+Input
+1
+2 1
+5 65
+Output
+35
+Input
+1
+2 1
+5 55
+Output
+30
+Input
+1
+4 2
+5 45 55 65
+Output
+55
