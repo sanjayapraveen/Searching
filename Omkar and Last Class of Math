@@ -1,0 +1,140 @@
+In Omkar's last class of math, he learned about the least common multiple, or LCM. LCM(a,b) is the smallest positive integer x which is divisible by both a and b.
+
+Omkar, having a laudably curious mind, immediately thought of a problem involving the LCM operation: given an integer n, find positive integers a and b such that a+b=n and LCM(a,b) is the minimum value possible.
+
+Can you help Omkar solve his ludicrously challenging math problem?
+
+Input
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤10). Description of the test cases follows.
+
+Each test case consists of a single integer n (2≤n≤109).
+
+Output
+For each test case, output two positive integers a and b, such that a+b=n and LCM(a,b) is the minimum possible.
+
+Sample input:
+3
+4
+6
+9
+Sample output:
+2 2
+3 3
+3 6
+For the first test case, the numbers we can choose are 1,3 or 2,2. LCM(1,3)=3 and LCM(2,2)=2, so we output 2 2.
+
+For the second test case, the numbers we can choose are 1,5, 2,4, or 3,3. LCM(1,5)=5, LCM(2,4)=4, and LCM(3,3)=3, so we output 3 3.
+
+For the third test case, LCM(3,6)=6. It can be shown that there are no other pairs of numbers which sum to 9 that have a lower LCM.
+Code:
+#include<bits/stdc++.h>
+using namespace std;
+ 
+void solve()
+{
+    int n,i;
+    cin>>n;
+    int x=n;
+  for(i=2;i*i<=n;i++)
+  {
+      if(n%i==0)
+      {
+          x=i;
+          break;
+      }
+  }
+    cout<<n/x<<" "<<n-n/x<<endl;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+        solve();
+    return 0;
+}
+Input
+3
+4
+5
+2
+Output
+2 2
+1 4
+1 1
+Input
+8
+527
+622
+63
+423
+147
+791
+838
+903
+Output
+31 496
+311 311
+21 42
+141 282
+49 98
+113 678
+419 419
+301 602
+Input
+6
+861605021
+68328580
+877214985
+692261986
+3399371
+684035729
+Output
+1 861605020
+34164290 34164290
+292404995 584809990
+346130993 346130993
+199963 3199408
+52618133 631417596
+Input
+10
+201963219
+303973760
+54544086
+751923241
+687055210
+1649300
+203977471
+402504158
+14556710
+207186606
+Output
+67321073 134642146
+151986880 151986880
+27272043 27272043
+17486587 734436654
+343527605 343527605
+824650 824650
+1 203977470
+201252079 201252079
+7278355 7278355
+103593303 103593303
+Input
+8
+4
+10
+9
+2
+6
+2
+6
+6
+Output
+2 2
+5 5
+3 6
+1 1
+3 3
+1 1
+3 3
+3 3
