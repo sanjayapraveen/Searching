@@ -1,0 +1,138 @@
+Everyone who has played Cut the Rope knows full well how the gameplay is organized. All levels in the game are divided into boxes. Initially only one box with some levels is available. Player should complete levels to earn stars, collecting stars opens new box with levels.
+
+
+Imagine that you are playing Cut the Rope for the first time. Currently you have only the levels of the first box (by the way, it is called "Cardboard Box"). Each level is characterized by two integers: a i — how long it takes to complete the level for one star, b i — how long it takes to complete the level for two stars (a i < b i).
+
+You want to open the next box as quickly as possible. So, you need to earn at least w stars. How do make it happen? Note that the level can be passed only once: either for one star or for two. You do not necessarily need to pass all the levels.
+
+Input
+The first line contains two integers n and w (1 ≤ n ≤ 3·105; 1 ≤ w ≤ 2n) — the number of levels in the first box and the number of stars you need to open another box. Each of the following n lines contains two integers a i and b i (1 ≤ a i < b i ≤ 109) — the attributes of the i-th level.
+
+Output
+In the first line print integer t — the minimum time you need to open the next box.
+
+In the next line, print n digits without spaces — the description of the optimal scenario:
+
+if you need to pass the i-th level for one star, the i-th digit should equal 1;
+if you need to pass the i-th level for two stars, the i-th digit should equal 2;
+if you do not need to pass the i-th level at all, the i-th digit should equal 0.
+Sample input:
+2 3
+1 2
+1 2
+Samle output:
+3
+12
+In the first test sample, answer 21 is also assumed correct.
+Code:
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+#define fo(i,a,b) for(int i=(a);i<=(b);++i)
+#define db double
+const int maxn=3e5+999;
+struct node{
+	int val,id;
+	node(int val=0,int id=0):val(val),id(id){};
+	friend bool operator<(node a,node b){return a.val>b.val;}
+};
+priority_queue<node>q1,q2,q3,q4,q5;
+int n,m,a[maxn],b[maxn],st[maxn];//st表示当前点选的状态0/1/2
+signed main(){
+	cin>>n>>m;
+	fo(i,1,n)cin>>a[i]>>b[i];
+	fo(i,1,n)q1.push(node(a[i],i)),q3.push(node(b[i],i));
+	int ans=0;
+	fo(i,1,m){//扩展一次
+		int opt,mn=0x3f3f3f3f,x,y;
+		if(q1.size()){
+			while(st[q1.top().id]&&q1.size())q1.pop();
+			if(q1.size()&&q1.top().val<mn)
+			mn=q1.top().val,x=q1.top().id,opt=1;
+		}
+		if(q2.size()){
+			while(st[q2.top().id]!=1&&q2.size())q2.pop();
+			if(!q2.empty()){
+				node now=q2.top();
+				if(st[now.id]==1&&now.val<mn)mn=now.val,x=now.id,opt=2;
+			}
+		}
+		if(q3.size()&&q4.size()){
+			while(st[q3.top().id]&&q3.size())q3.pop();
+			while(st[q4.top().id]!=1&&q4.size())q4.pop();
+			if(q3.size()&&q4.size()){
+				node now1=q3.top(),now2=q4.top();
+				if(now1.val+now2.val<mn)mn=now1.val+now2.val,x=now1.id,y=now2.id,opt=3;
+			}
+		}
+		if(q3.size()&&q5.size()){
+			while(st[q3.top().id]&&q3.size())q3.pop();
+			while(st[q5.top().id]!=2&&q5.size())q5.pop();
+			if(q3.size()&&q5.size()){
+				node now1=q3.top(),now2=q5.top();
+				if(now1.val+now2.val<mn)mn=now1.val+now2.val,x=now1.id,y=now2.id,opt=4;
+			}
+		}
+		if(opt==1){
+			q1.pop();
+			q2.push(node(b[x]-a[x],x));q4.push(node(-a[x],x));
+			st[x]=1;
+		}
+		if(opt==2){
+			q2.pop();
+			q5.push(node(a[x]-b[x],x));
+			st[x]=2;
+		}
+		if(opt==3){
+			q3.pop();q4.pop();
+			st[x]=2;st[y]=0;
+			q5.push(node(a[x]-b[x],x));
+			q1.push(node(a[y],y));q3.push(node(b[y],y));
+		}
+		if(opt==4){
+			q3.pop();q5.pop();
+			st[x]=2;st[y]=1;
+			q5.push(node(a[x]-b[x],x));
+			q2.push(node(b[y]-a[y],y));q4.push(node(-a[y],y));
+		}
+		ans+=mn;
+	}
+	cout<<ans<<endl;
+	fo(i,1,n)cout<<st[i];
+}
+Input
+5 3
+10 20
+5 10
+10 20
+6 9
+25 30
+Output
+14
+01020
+Input
+1 1
+1 2
+Output
+1
+1
+Input
+1 2
+1 2
+Output
+2
+2
+Input
+2 1
+1 2
+2 3
+Output
+1
+10
+Input
+2 2
+1 2
+3 4
+Output
+2
+20
