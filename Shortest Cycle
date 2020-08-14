@@ -1,0 +1,189 @@
+You are given n integer numbers a1,a2,…,an. Consider graph on n nodes, in which nodes i, j (i≠j) are connected if and only if, ai AND aj≠0, where AND denotes the bitwise AND operation.
+
+Find the length of the shortest cycle in this graph or determine that it doesn't have cycles at all.
+
+Input
+The first line contains one integer n (1≤n≤105) — number of numbers.
+
+The second line contains n integer numbers a1,a2,…,an (0≤ai≤10^18).
+
+Output
+If the graph doesn't have any cycles, output −1. Else output the length of the shortest cycle.
+Sample input:
+4
+3 6 28 9
+Sample output:
+4
+In the first example, the shortest cycle is (9,3,6,28).
+Code:
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <sstream>
+#include <queue>
+#include <deque>
+#include <bitset>
+#include <iterator>
+#include <list>
+#include <stack>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <ctime>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cassert>
+#include <iomanip>
+#include <array>
+ 
+using namespace std;
+ 
+typedef long double ld;
+typedef long long ll;
+ 
+template<class T> using min_heap = priority_queue<T, vector<T>, greater<T>>;
+ 
+template<class T, class U>
+inline void MAX(T &a, U b) { if (a < b) a = b; }
+ 
+template<class T, class U>
+inline void MIN(T &a, U b) { if (a > b) a = b; }
+ 
+template<class T, class U>
+inline bool ckmax(T &a, U b) { return b > a && (a = b, true); }
+ 
+template<class T, class U>
+inline bool ckmin(T &a, U b) { return b < a && (a = b, true); }
+ 
+template<class T, class U>
+inline bool INR(T i, U l, U r) { return l <= i && i <= r; }
+ 
+// SIMPLIFICATION UTILITY
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0); cout.precision(20)
+#define all(x) (x).begin(), (x).end()
+#define sz(x) ((int)(x).size())
+ 
+const int MOD = (int)(1e9) + 7;
+const int INF = 0x3f3f3f3f;
+const int NINF = -0x3f3f3f40;
+const ll INF_L = 0x3f3f3f3f3f3f3f3f;
+const ll NINF_L = -0x3f3f3f3f3f3f3f40;
+const int MAXN = 130;
+struct edge {
+    int x, y, w;
+    bool operator<(const edge& o) const {
+        return w < o.w;
+    }
+};
+vector<int> adj[MAXN];
+bool vis[MAXN];
+int main() {
+    FAST_IO;
+    int n; cin >> n;
+    ll arr[n];
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    int L = 61;
+    vector<pair<ll, ll>> edges;
+    for (int i = 0; i < L; i++) {
+        vector<ll> group;
+        for (int j = 0; j < n; j++) {
+//            cout << (1LL << i) << '\n';
+            if ((1LL << i) & arr[j])
+                group.push_back(arr[j]);
+        }
+        if (group.size() >= 3) {
+            cout << 3 << '\n';
+            return 0;
+        }
+        if (group.size() == 2 && group[0] != group[1]) {
+            edges.push_back({group[0], group[1]});
+            edges.push_back({group[1], group[0]});
+        }
+    }
+    if (edges.empty()) {
+        cout << -1 << '\n';
+        return 0;
+    }
+    sort(all(edges));
+    edges.resize(distance(edges.begin(), unique(all(edges))));
+    vector<ll> cc;
+    for (auto [x, y] : edges) {
+        cc.push_back(x);
+        cc.push_back(y);
+    }
+    sort(all(cc));
+    auto end = unique(all(cc));
+    cc.resize(distance(cc.begin(), end));
+ 
+    for(int i = 0; i < sz(edges); i++) {
+        auto [x, y] = edges[i];
+        edges[i].first = lower_bound(all(cc), x) - cc.begin(), edges[i].second = lower_bound(all(cc), y) - cc.begin();
+        adj[edges[i].first].push_back(edges[i].second);
+//        adj[edges[i].second].push_back(edges[i].first);
+    }
+ 
+    int ans = INF;
+ 
+    for (auto [x, y] : edges) {
+        memset(vis, false, sizeof vis);
+        // remove edge and find sp from x to y
+        adj[x].erase(find(all(adj[x]), y));
+        adj[y].erase(find(all(adj[y]), x));
+ 
+        queue<pair<int, int>> q;
+        q.push({x, 0});
+        vis[x] = true;
+        while(!q.empty()) {
+            auto [v, w] = q.front(); q.pop();
+            if (v == y) {
+                ckmin(ans, w);
+                break;
+            }
+            for (auto node: adj[v]) {
+                if (!vis[node]) {
+                    vis[node] = true;
+                    q.push({node, w + 1});
+                }
+            }
+        }
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+ 
+    cout << (ans == INF ? -1 : ans + 1) << '\n';
+}
+Input
+5
+5 12 9 16 48
+Output
+3
+Input
+4
+1 2 4 8
+Output
+-1
+Input
+1
+1000000000000000000
+Output
+-1
+Input
+4
+70369817919488 281474976710657 70368744177665 281476050452480
+Output
+4
+Input
+5
+292733975779082240 18014398509482240 306244774661193728 4504699138998272 1099511628032
+Output
+5
