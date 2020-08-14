@@ -1,0 +1,88 @@
+So, the New Year holidays are over. Santa Claus and his colleagues can take a rest and have guests at last. When two "New Year and Christmas Men" meet, thear assistants cut out of cardboard the letters from the guest's name and the host's name in honor of this event. Then the hung the letters above the main entrance. One night, when everyone went to bed, someone took all the letters of our characters' names. Then he may have shuffled the letters and put them in one pile in front of the door.
+
+The next morning it was impossible to find the culprit who had made the disorder. But everybody wondered whether it is possible to restore the names of the host and his guests from the letters lying at the door? That is, we need to verify that there are no extra letters, and that nobody will need to cut more letters.
+
+Help the "New Year and Christmas Men" and their friends to cope with this problem. You are given both inscriptions that hung over the front door the previous night, and a pile of letters that were found at the front door next morning.
+
+Input
+The input file consists of three lines: the first line contains the guest's name, the second line contains the name of the residence host and the third line contains letters in a pile that were found at the door in the morning. All lines are not empty and contain only uppercase Latin letters. The length of each line does not exceed 100.
+
+Output
+Print "YES" without the quotes, if the letters in the pile could be permuted to make the names of the "New Year and Christmas Men". Otherwise, print "NO" without the quotes.
+Sample input:
+SANTACLAUS
+DEDMOROZ
+SANTAMOROZDEDCLAUS
+Sample output:
+YES
+In the first sample the letters written in the last line can be used to write the names and there won't be any extra letters left.In the second sample letter "P" is missing from the pile and there's an extra letter "L".
+
+In the third sample there's an extra letter "L".
+Code:
+#include <bits/stdc++.h>
+#define swap(a,b); {const auto ___temp=a;a=b;b=___temp;}
+#define swap_nums(a,b); {a^=b;b^=a;a^=b;}
+#define bigger(a,b) (a<b?b:a)
+#define max_element(a,b) (*max_element(a,b))
+#define min_element(a,b) (*min_element(a,b))
+#define smaller(a,b) (a<b?a:b)
+#define lcm(a,b) ((a)*(b)/gcd(a,b))
+#define gcd(a,b) __gcd(a,b)
+#define tolowercase(s) transform((s).begin(),(s).end(),(s).begin(),[](const char&c){return tolower(c);})
+#define touppercase(s) transform((s).begin(),(s).end(),(s).begin(),[](const char&c){return toupper(c);})
+#define preceding_zeros(x) __builtin_clz(x)
+#define leading_zeros(x) __builtin_ctz(x)
+#define ones_count(x) __builtin_popcount(x)
+#define ones_count_parity(x) __builtin_parity(x)  // ones_count(x) & 1
+#define ll long long
+using namespace std;
+template<typename T>bool prime(T n){if(n<=1)return false;if(n<=3)return true;if(n&1^1||n%3==0)return false;for(T i=5;i*i<=n;i+=6)if(n%i==0||n%(i+2)==0)return false;return true;}
+ 
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+ 
+	string s, ori;
+	cin >> s;
+	ori += s;
+	cin >> s;
+	ori += s;
+	string after;
+	cin >> after;
+	sort(ori.begin(), ori.end());
+	sort(after.begin(), after.end());
+	if (ori == after)
+		cout << "YES";
+	else
+		cout << "NO";
+}
+Input
+PAPAINOEL
+JOULUPUKKI
+JOULNAPAOILELUPUKKI
+Output
+NO
+Input
+BABBONATALE
+FATHERCHRISTMAS
+BABCHRISTMASBONATALLEFATHER
+Output
+NO
+Input
+B
+A
+AB
+Output
+YES
+Input
+ONDOL
+JNPB
+ONLNJBODP
+Output
+YES
+Input
+Y
+W
+YW
+Output
+YES
