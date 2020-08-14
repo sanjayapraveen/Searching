@@ -1,0 +1,191 @@
+You are given two integers a and m. Calculate the number of integers x such that 0≤x<m and gcd(a,m)=gcd(a+x,m).
+
+Note: gcd(a,b) is the greatest common divisor of a and b.
+
+Input
+The first line contains the single integer T (1≤T≤50) — the number of test cases.
+
+Next T lines contain test cases — one per line. Each line contains two integers a and m (1≤a<m≤1010).
+
+Output
+Print T integers — one per test case. For each test case print the number of appropriate x-s.
+Sample input:
+3
+4 9
+5 10
+42 9999999967
+Sample output:
+6
+1
+9999999966
+In the first test case appropriate x-s are [0,1,3,4,6,7].
+
+In the second test case the only appropriate x is 0.
+
+Code:
+#include <bits/stdc++.h>
+using namespace std;
+int t;
+long long a, m;
+ 
+long long gcd(long long a, long long b) {
+	if (b == 0) {
+		return a;
+	}
+	return gcd(b, a % b);
+}
+ 
+long long solve() {
+	cin >> a >> m;
+ 
+	long long g = gcd(a, m);
+ 
+	m /= g;
+ 
+	long long ans = m;
+ 
+	for (long long d = 2; d * d <= m; d++) {
+		if (m % d) continue;
+ 
+		ans /= d;
+		ans *= (d - 1);
+ 
+		while (m % d == 0) {
+			m /= d;
+		}
+	}
+ 
+	if (m > 1) {
+		ans /= m;
+		ans *= m - 1;
+	}
+ 
+	return ans;
+}
+ 
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+ 
+	cin >> t;
+	while (t--) {
+		cout << solve() << '\n';
+	}
+ 
+	return 0;
+}
+Input
+10
+1 2
+1 3
+1 4
+3 5
+3 6
+3 7
+1 8
+7 9
+8 10
+1 11
+Output
+1
+2
+2
+4
+1
+6
+4
+6
+4
+10
+Input
+10
+20 52
+48 53
+36 54
+23 55
+14 56
+54 57
+34 58
+33 59
+10 60
+21 61
+Output
+12
+52
+2
+40
+2
+18
+28
+58
+2
+60
+Input
+10
+37 102
+78 103
+31 104
+7 105
+80 106
+52 107
+26 108
+1 109
+40 110
+85 111
+Output
+32
+102
+48
+8
+52
+106
+18
+108
+10
+72
+Input
+10
+119 152
+144 153
+41 154
+69 155
+57 156
+91 157
+21 158
+54 159
+105 160
+79 161
+Output
+72
+16
+60
+120
+24
+156
+78
+52
+16
+132
+Input
+10
+36 202
+79 203
+4 204
+140 205
+73 206
+41 207
+61 208
+200 209
+118 210
+75 211
+Output
+100
+168
+32
+40
+102
+132
+96
+180
+48
+210
