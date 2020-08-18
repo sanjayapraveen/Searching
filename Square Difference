@@ -1,0 +1,137 @@
+Alice has a lovely piece of cloth. It has the shape of a square with a side of length a centimeters. Bob also wants such piece of cloth. He would prefer a square with a side of length b centimeters (where b<a). Alice wanted to make Bob happy, so she cut the needed square out of the corner of her piece and gave it to Bob. Now she is left with an ugly L shaped cloth (see pictures below).
+
+Alice would like to know whether the area of her cloth expressed in square centimeters is prime. Could you help her to determine it?
+
+Input
+The first line contains a number t (1≤t≤5) — the number of test cases.
+
+Each of the next t lines describes the i-th test case. It contains two integers a and b (1≤b<a≤1011) — the side length of Alice's square and the side length of the square that Bob wants.
+
+Output
+Print t lines, where the i-th line is the answer to the i-th test case. Print "YES" (without quotes) if the area of the remaining piece of cloth is prime, otherwise print "NO".
+
+You can print each letter in an arbitrary case (upper or lower).
+Sample input:
+4
+6 5
+16 13
+61690850361 24777622630
+34 33
+Sample output:
+YES
+NO
+NO
+YES
+
+The figure below depicts the first test case. The blue part corresponds to the piece which belongs to Bob, and the red part is the piece that Alice keeps for herself. The area of the red part is 62−52=36−25=11, which is prime, so the answer is "YES".
+In the second case, the area is 162−132=87, which is divisible by 3.
+In the third case, the area of the remaining piece is 616908503612−247776226302=3191830435068605713421. This number is not prime because 3191830435068605713421=36913227731⋅86468472991.
+In the last case, the area is 342−332=67.
+Code:
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using vi = vector<int>;
+#define pb push_back
+#define rsz resize
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+using pi = pair<int,int>;
+#define f first
+#define s second
+#define mp make_pair
+#define DEBUG(x) cout << '>' << #x << ':' << x << endl;
+void setIO(string name = "1033B") {
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    freopen((name+".in").c_str(), "r", stdin);
+    freopen((name+".out").c_str(), "w", stdout);
+}
+ 
+int main() {
+    //setIO();
+    int t; cin >> t;
+    while (t--) {
+        ll a, b; cin >> a >> b;
+        if (a - b > 1) {
+            cout << "NO" << "\n";
+        } else {
+            ll area = 2 * a - 1; bool ok = 1;
+            for (int i = 2; i <= sqrt(area) + 1; i++) {
+                if (area % i == 0) {
+                    ok = 0;
+                }
+            }
+            if (ok) {
+                cout << "YES" << "\n";
+            } else {
+                cout << "NO" << '\n';
+            }
+        }
+    }
+}
+
+Input
+5
+160 159
+223 222
+480 479
+357 356
+345 344
+Output
+NO
+NO
+NO
+NO
+NO
+Input
+5
+631 582
+201 106
+780 735
+608 528
+470 452
+Output
+NO
+NO
+NO
+NO
+NO
+Input
+5
+2 1
+3 1
+4 1
+5 1
+8 7
+Output
+YES
+NO
+NO
+NO
+NO
+Input
+5
+2187 2186
+517 516
+3235 3234
+4810 4809
+3076 3075
+Output
+YES
+YES
+YES
+YES
+YES
+Input
+5
+40957587394 40957587393
+46310781841 46310781840
+21618631676 21618631675
+17162988704 17162988703
+16831085306 16831085305
+Output
+NO
+NO
+NO
+NO
+NO
