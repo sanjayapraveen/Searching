@@ -1,0 +1,166 @@
+You've got a positive integer sequence a 1, a 2, ..., a n. All numbers in the sequence are distinct. Let's fix the set of variables b 1, b 2, ..., b m. Initially each variable b i (1 ≤ i ≤ m) contains the value of zero. Consider the following sequence, consisting of n operations.
+
+The first operation is assigning the value of a 1 to some variable b x (1 ≤ x ≤ m). Each of the following n - 1 operations is assigning to some variable b y the value that is equal to the sum of values that are stored in the variables b i and b j (1 ≤ i, j, y ≤ m). At that, the value that is assigned on the t-th operation, must equal a t. For each operation numbers y, i, j are chosen anew.
+
+Your task is to find the minimum number of variables m, such that those variables can help you perform the described sequence of operations.
+
+Input
+The first line contains integer n (1 ≤ n ≤ 23). The second line contains n space-separated integers a 1, a 2, ..., a n (1 ≤ a k ≤ 109).
+
+It is guaranteed that all numbers in the sequence are distinct.
+
+Output
+In a single line print a single number — the minimum number of variables m, such that those variables can help you perform the described sequence of operations.
+
+If you cannot perform the sequence of operations at any m, print -1.
+Sample input:
+5
+1 2 3 6 8
+Sample output:
+2
+In the first sample, you can use two variables b 1 and b 2 to perform the following sequence of operations.
+
+b 1 := 1;
+b 2 := b 1 + b 1;
+b 1 := b 1 + b 2;
+b 1 := b 1 + b 1;
+b 1 := b 1 + b 2.
+Code:
+#include <stdlib.h>
+#include <time.h>
+#include <vector>
+#include <math.h>
+#include <algorithm>
+#include <sstream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <string.h>
+#include <map>
+#include <stack>
+#include <queue>
+#include <utility>
+#include <set>
+ 
+using namespace std;
+ 
+typedef long long int ll;
+ 
+const int M=20+4;
+ 
+int a[M];
+int dp[1<<M];
+int ihash[M];
+ 
+int dsum[M][M];
+ 
+int main()
+{
+	
+	//freopen("input.txt","r",stdin);
+	//freopen("output.txt","w",stdout);
+	
+	int n; cin>>n;
+	for (int i = 0; i < n; i++){
+		cin>>a[i];
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			dsum[i][j] = -1;
+			for (int k = 0; k < n; k++){
+				if (a[i] == a[j] + a[k]){
+					dsum[i][j] = k;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < (1<<n); i++){
+		dp[i] = M;
+	}
+	
+	dp[1] = 1;
+	
+	for (int i = 1; i < n; i++){
+		for (int istate = 0; istate < (1 << (i - 1)); istate++){
+			// state is valid or not
+			int state = istate + (1 << (i - 1));
+			bool ok1 = (dp[state] < M);
+			
+			for (int j = 0; j < n; j++){
+				ihash[j] = 0;
+			}
+			int num1 = 0;
+			int tmp = state;
+			for (int j = 0; j < i; j++){
+				int d = (tmp & 1);
+				ihash[j] = d;
+				tmp = (tmp >> 1);
+				num1 = num1 + d;
+			}						
+			
+			bool ok3 = false;
+			for (int j = 0; j < i; j++){
+				if (ihash[j] == 1){
+					int n1 = dsum[i][j];
+					if (n1 != -1 && ihash[n1] == 1){
+						ok3 = true;
+					}
+				}
+			}
+			
+			if (ok1 && ok3){
+				int nxt = state + (1 << i);
+				dp[nxt] = min(dp[nxt], dp[state] + (num1 == dp[state] ? 1 : 0));
+				
+				for (int j = 0; j < i; j++){
+					if (ihash[j] == 1){
+						nxt = state + (1 << i) - (1 << j);
+						dp[nxt] = min(dp[nxt], dp[state]);
+					}
+				}
+			}
+		}
+	}
+	
+	int ans = M;
+	for (int i = 0; i < (1 << n); i++){
+		if (i >= (1 << (n - 1))){
+			ans = min(ans, dp[i]);
+		}
+	}
+	if (ans == M){
+		ans = -1;
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+	return 0;
+	
+}
+Input
+3
+3 6 5
+Output
+-1
+Input
+6
+2 4 8 6 10 18
+Output
+3
+Input
+7
+1 2 4 5 3 6 7
+Output
+3
+Input
+10
+11 22 44 88 132 264 66 33 165 55
+Output
+5
+Input
+10
+201 402 804 603 1608 2010 1206 2412 4824 2211
+Output
+3
