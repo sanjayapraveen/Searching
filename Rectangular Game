@@ -1,0 +1,198 @@
+The Smart Beaver from ABBYY decided to have a day off. But doing nothing the whole day turned out to be too boring, and he decided to play a game with pebbles. Initially, the Beaver has n pebbles. He arranges them in a equal rows, each row has b pebbles ( a > 1). Note that the Beaver must use all the pebbles he has, i. e. n = a·b.
+
+10 pebbles are arranged in two rows, each row has 5 pebbles
+Once the Smart Beaver has arranged the pebbles, he takes back any of the resulting rows (that is, b pebbles) and discards all other pebbles. Then he arranges all his pebbles again (possibly choosing other values of a and b) and takes back one row, and so on. The game continues until at some point the Beaver ends up with exactly one pebble.
+
+The game process can be represented as a finite sequence of integers c 1, ..., c k, where:
+
+c 1 = n
+c i + 1 is the number of pebbles that the Beaver ends up with after the i-th move, that is, the number of pebbles in a row after some arrangement of c i pebbles (1 ≤ i < k). Note that c i > c i + 1.
+c k = 1
+The result of the game is the sum of numbers c i. You are given n. Find the maximum possible result of the game.
+
+Input
+The single line of the input contains a single integer n — the initial number of pebbles the Smart Beaver has.
+
+The input limitations for getting 30 points are:
+
+2 ≤ n ≤ 50
+The input limitations for getting 100 points are:
+
+2 ≤ n ≤ 109
+Output
+Print a single number — the maximum possible result of the game.
+Sample input:
+10
+Sample output:
+16
+Consider the first example ( c 1 = 10). The possible options for the game development are:
+
+Arrange the pebbles in 10 rows, one pebble per row. Then c 2 = 1, and the game ends after the first move with the result of 11.
+Arrange the pebbles in 5 rows, two pebbles per row. Then c 2 = 2, and the game continues. During the second move we have two pebbles which can be arranged in a unique way (remember that you are not allowed to put all the pebbles in the same row!) — 2 rows, one pebble per row. c 3 = 1, and the game ends with the result of 13.
+Finally, arrange the pebbles in two rows, five pebbles per row. The same logic leads us to c 2 = 5, c 3 = 1, and the game ends with the result of 16 — the maximum possible result.
+Code:
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+#include <ext/rope>
+ 
+using namespace __gnu_cxx;
+ 
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+ 
+using namespace __gnu_pbds;
+ 
+#define int long long
+ 
+ 
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+typedef vector<pii> vpi;
+ 
+ 
+#define add push_back
+#define rem pop_back
+#define ALL(x) x.begin(), x.end()
+#define SORT(x) sort(ALL(x))
+#define REV(x) reverse(ALL(x))
+#define F first
+#define S second
+#define DEBUG(x) cout << #x << " " << x << endl;
+#define forn(i, a, b) for(int i = a; i <= b; i++)
+ 
+ 
+template<typename T1, typename T2> auto max ( T1 a, T2 b ) { auto max = a > b ? a : b; return max; }
+template<typename T1, typename T2> auto min ( T1 a, T2 b ) { auto min = a < b ? a : b; return min; }
+template<typename T1, typename T2> void updmax ( T1 &a, T2 b ) { a = a > b ? a : b; }
+template<typename T1, typename T2> void updmin ( T1 &a, T2 b ) { a = a < b ? a : b; }
+ 
+ 
+const double EPS = 1e-9;
+const double PI = acos ( -1. );
+const int mod = 1e9 + 7;
+int inf = __INT64_MAX__;
+string YN[] = {"NO", "YES"};
+ 
+ 
+#define gcd(a, b) __gcd(a, b)
+#define lcm(a, b) ((a)*((b)/gcd(a,b)))
+ 
+ 
+inline int gcd_e( int a, int b, int & x, int & y )
+{
+        if ( !a ) {
+                x = 0;
+                y = 1;
+                return b;
+        }
+        int x1, y1;
+        int d = gcd_e ( b % a, a, x1, y1 );
+        x = y1 - ( b / a ) * x1;
+        y = x1;
+        return d;
+}
+ 
+ 
+inline int div_mod( int a, int b, int m = mod )
+{
+        int x, y;
+        int g = gcd_e( b, m, x, y );
+        x = ( x % m + m ) % m;
+        return ( a * x ) % m;
+}
+ 
+ 
+int pow_mod ( int a, int n, int m = mod )
+{
+        int res = 1;
+        while ( n ) {
+                if ( n & 1 )
+                        res = ( res * a ) % m;
+                a = ( a * a ) % m;
+                n >>= 1;
+        }
+        return res;
+}
+ 
+ 
+ 
+ 
+int px[] = { 1, -1, 0, 0 };
+int py[] = { 0, 0, -1, 1 };
+int dx[] = { 1, 0, -1, 0, 1, 1, -1, -1 };
+int dy[] = { 0, 1, 0, -1, 1, -1, 1, -1 };
+ 
+ 
+//tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> tr;
+ 
+ 
+static const int MAXN = 1 << 20;
+static int a[101][101], used[101][101], b[MAXN];
+ 
+int n, m, k;
+int res, ans, cnt;
+string s;
+ 
+ 
+void solution()
+{
+	cin >> n;
+	ans = n;
+	while( n > 1 ){
+		bool f = 1;
+		for( int i = 2; i * i <= n; i++ ){
+			if( n % i == 0 ){
+				ans += n / i;
+				n /= i;
+				f = 0;
+				break;
+			}
+		}
+		if( f ){
+			ans++;
+			break;
+		}
+	}
+	cout << ans << endl;
+}
+ 
+ 
+int32_t main ( )
+{
+ 
+        //freopen("input.txt", "r", stdin);
+        //freopen("output.txt", "w", stdout);
+ 
+        ios_base::sync_with_stdio ( false ); cin.tie ( nullptr ); cout.tie ( nullptr );
+        //cout.precision(15);
+ 
+        int query = 1;
+        // cin >> query;
+ 
+        while ( query-- ) solution();
+ 
+        return 0;
+ 
+}
+Input
+8
+Output
+15
+Input
+4
+Output
+7
+Input
+36
+Output
+67
+Input
+32
+Output
+63
+Input
+46
+Output
+70
