@@ -1,0 +1,149 @@
+The Committee for Research on Binary Viruses discovered a method of replication for a large family of viruses whose genetic codes are sequences of zeros and ones. Each virus originates from a single gene; for simplicity genes are denoted by integers from 0 to G−1. At each moment in time a virus is a sequence of genes. When mutation occurs, one of the genes from the sequence is replaced by a certain sequence of genes, according to the mutation table. The virus stops mutating when it consists only of genes 0 and 1.
+
+For instance, for the following mutation table:
+2→⟨0 1⟩3→⟨2 0 0⟩3→⟨1 3⟩4→⟨0 3 1 2⟩5→⟨2 1⟩5→⟨5⟩
+a virus that initially consisted of a single gene 4, could have mutated as follows:
+⟨4⟩→⟨0 3 1 2–––––––⟩→⟨0 2 0 0––––– 1 2⟩→⟨0 0 1––– 0 0 1 2⟩→⟨0 0 1 0 0 1 0 1–––⟩
+or in another way:
+⟨4⟩→⟨0 3 1 2–––––––⟩→⟨0 1 3––– 1 2⟩→⟨0 1 3 1 0 1–––⟩→⟨0 1 2 0 0––––– 1 0 1⟩→⟨0 1 0 1––– 0 0 1 0 1⟩
+Viruses are detected by antibodies that identify the presence of specific continuous fragments of zeros and ones in the viruses' codes. For example, an antibody reacting to a fragment ⟨0 0 1 0 0⟩ will detect a virus ⟨0 0 1 0 0 1 0 1⟩, but it will not detect a virus ⟨0 1 0 1 0 0 1 0 1⟩.
+
+For each gene from 2 to G−1, the scientists are wondering whether a given set of antibodies is enough to detect all viruses that can emerge through mutations from this gene. If not, they want to know the length of the shortest virus that cannot be detected.
+
+It may happen that sometimes scientists don't have any antibodies. Then of course no virus can be detected, so the scientists are only interested in the length of the shortest possible virus that can emerge from the gene mutations.
+
+Input
+The first line of the input will contain three integers G, N and M (G>2, N≥G−2, M≥0) specifying the number of genes, the number of rows in the mutation table, and the number of antibodies.
+
+The following N lines contain descriptions of rows of the mutation table; each line begins with two integers a and k (2≤a<G, k≥1), followed by a sequence of k integers b1,b2,…,bk (0≤bi<G), that encode the row
+a→⟨b1 b2 … bk⟩
+The sum of all values k does not exceed 100. Every integer from 2 to G−1 appears in the table as a at least once.
+
+The next M lines contain descriptions of the antibodies; each such line begins with an integer ℓ (ℓ≥1), followed by a sequence of ℓ integers c1,c2,…,cℓ (0≤ci≤1), describing the antibody. The sum of all values ℓ does not exceed 50.
+
+Output
+Your program needs to output exactly G−2 lines, containing the answers for the subsequent genes from 2 to G−1.
+
+If all viruses that can mutate from this single gene can be detected by the given set of antibodies, you need to print the word "YES". You also need to print this if there are no viruses that could originate from this gene (it can happen when the sequences never stop mutating).
+
+Otherwise you need to print the word "NO", followed by an integer denoting the minimal length of the undetectable virus. You can assume that for all the prepared input data this value will be smaller than 263.
+
+Scoring
+Subtasks:
+
+(11 points) No antibodies (M=0)
+(14 points) N=G−2
+(25 points) One antibody (M=1)
+(32 points) The sum of all values ℓ does not exceed 10
+(18 points) No further constraints
+CODE:
+#include<bits/stdc++.h>
+#define ll long long
+#define ull unsigned ll
+#define uint unsigned
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define IT iterator
+#define PB push_back
+#define fi first
+#define se second
+#define For(i,j,k) for (int i=(int)(j);i<=(int)(k);i++)
+#define Rep(i,j,k) for (int i=(int)(j);i>=(int)(k);i--)
+#define CLR(a,v) memset(a,v,sizeof(a));
+#define CPY(a,b) memcpy(a,b,sizeof(a));
+#define debug puts("wzpakking")
+#define y1 ysghysgsygsh 
+using namespace std;
+namespace ACM{
+	int ch[55][2],nd=1;
+	int fa[55],gg[55],q[55];
+	void init(){
+		int l,x=1,c;
+		scanf("%d",&l);
+		For(i,1,l){
+			scanf("%d",&c);
+			if (!ch[x][c]) ch[x][c]=++nd;
+			x=ch[x][c];
+		}
+		gg[x]=1;
+	}
+	void build(){
+		int h=0,t=0;
+		For(i,0,1)
+			if (ch[1][i]){
+				fa[ch[1][i]]=1;
+				q[++t]=ch[1][i];
+			}
+			else
+				ch[1][i]=1;
+		while (h!=t){
+			int x=q[++h];
+			gg[x]|=gg[fa[x]];
+			For(i,0,1)
+				if (ch[x][i]){
+					fa[ch[x][i]]=ch[fa[x]][i];
+					q[++t]=ch[x][i];
+				}
+				else
+					ch[x][i]=ch[fa[x]][i];
+		}
+	}
+}
+int G,n,m;
+int to[105];
+int f1[105],f2[105];
+vector<int> op[105];
+ull d1[55][55];
+ull d2[55][55];
+ull dis[105][55][55];
+int main(){
+	scanf("%d%d%d",&G,&n,&m);
+	For(i,1,n){
+		int l,x;
+		scanf("%d%d",&to[i],&l);
+		For(j,1,l) scanf("%d",&x),op[i].PB(x);
+	}
+	For(i,1,m) ACM::init();
+	ACM::build();
+	m=ACM::nd;
+	For(i,0,G-1) For(j,1,m) For(k,1,m)
+		dis[i][j][k]=1ull<<63;
+	For(i,0,1) For(j,1,m){
+		int to=ACM::ch[j][i];
+		if (!ACM::gg[to])
+			dis[i][j][to]=1;
+	}
+	f1[0]=f1[1]=1;
+	for (;;){
+		bool fllag=0;
+		memset(f2,0,sizeof(f2));
+		For(i,1,n){
+			bool flag=0;
+			for (auto p:op[i])
+				flag|=f1[p]&&(!f2[p]);
+			if (!flag) continue;
+			For(j,1,m) For(k,1,m)
+				d1[j][k]=(j==k?0:(1ull<<63));
+			for (auto p:op[i]){
+				For(j,1,m) For(k,1,m) d2[j][k]=1ull<<63;
+				For(j,1,m) For(k,1,m) For(l,1,m)
+					if (d1[j][k]<-dis[p][k][l])
+						d2[j][l]=min(d2[j][l],d1[j][k]+dis[p][k][l]);
+				For(j,1,m) For(k,1,m) d1[j][k]=d2[j][k];
+			}
+			For(j,1,m) For(k,1,m)
+				if (d1[j][k]<dis[to[i]][j][k]){
+					//if (!d1[j][k]) cout<<i<<' '<<to[i]<<' '<<j<<' '<<k<<endl;
+					dis[to[i]][j][k]=d1[j][k],fllag=1,f2[to[i]]=1;
+				}
+		}
+		if (!fllag) break;
+		For(i,0,G-1) swap(f1[i],f2[i]);
+	}
+	For(i,2,G-1){
+		ull ans=1ull<<63;
+		For(j,1,m) ans=min(ans,dis[i][1][j]);
+		if (ans==(1ull<<63)) puts("YES");
+		else printf("NO %llu\n",ans);
+	}
+}
