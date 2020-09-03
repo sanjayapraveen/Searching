@@ -1,0 +1,40 @@
+A binary matrix is called good if every even length square sub-matrix has an odd number of ones.
+
+Given a binary matrix a consisting of n rows and m columns, determine the minimum number of cells you need to change to make it good, or report that there is no way to make it good at all.
+
+All the terms above have their usual meanings — refer to the Notes section for their formal definitions.
+
+Input
+The first line of input contains two integers n and m (1≤n≤m≤106 and n⋅m≤106)  — the number of rows and columns in a, respectively.
+
+The following n lines each contain m characters, each of which is one of 0 and 1. If the j-th character on the i-th line is 1, then ai,j=1. Similarly, if the j-th character on the i-th line is 0, then ai,j=0.
+
+Output
+Output the minimum number of cells you need to change to make a good, or output −1 if it's not possible at all.
+In the first case, changing a1,1 to 0 and a2,2 to 1 is enough.
+Code:
+from collections import *
+from sys import exit, stdin, stderr
+def rl():
+    return [int(w) for w in stdin.readline().split()]
+ 
+n, m = rl()
+if n > 3:
+    print(-1)
+    exit(0)
+if n < 2:
+    print(0)
+    exit(0)
+a = [[int(c) for c in stdin.readline().rstrip()] for _ in range(n)]
+if n == 2:
+    a.append(a[0])
+r = n * m
+for target in range(4):
+    total = 0
+    for a0, a1, a2 in zip(*a):
+        if a0 ^ a1 != target & 1 or a1 ^ a2 != target >> 1:
+            total += 1
+        target ^= 3
+    if total < r:
+        r = total
+print(r)
