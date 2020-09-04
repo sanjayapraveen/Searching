@@ -1,0 +1,90 @@
+A remote island chain contains n islands, with some bidirectional bridges between them. The current bridge network forms a tree. In other words, a total of n - 1 bridges connect pairs of islands in a way that it's possible to reach any island from any other island using the bridge network. The center of each island contains an identical pedestal, and all but one of the islands has a fragile, uniquely colored statue currently held on the pedestal. The remaining island holds only an empty pedestal.
+
+The islanders want to rearrange the statues in a new order. To do this, they repeat the following process: first, they choose an island directly adjacent to the island containing an empty pedestal. Then, they painstakingly carry the statue on this island across the adjoining bridge and place it on the empty pedestal.
+
+It is often impossible to rearrange statues in the desired order using only the operation described above. The islanders would like to build one additional bridge in order to make this achievable in the fewest number of movements possible. Find the bridge to construct and the minimum number of statue movements necessary to arrange the statues in the desired position.
+
+Input
+The first line contains a single integer n (2 ≤ n ≤ 200 000) — the total number of islands.
+
+The second line contains n space-separated integers ai (0 ≤ ai ≤ n - 1) — the statue currently located on the i-th island. If ai = 0, then the island has no statue. It is guaranteed that the ai are distinct.
+
+The third line contains n space-separated integers bi (0 ≤ bi ≤ n - 1) — the desired statues of the i-th island. Once again, bi = 0 indicates the island desires no statue. It is guaranteed that the bi are distinct.
+
+The next n - 1 lines each contain two distinct space-separated integers ui and vi (1 ≤ ui, vi ≤ n) — the endpoints of the i-th bridge. Bridges form a tree, and it is guaranteed that no bridge is listed twice in the input.
+
+Output
+Print a single line of integers:
+
+If the rearrangement can be done in the existing network, output 0 t, where t is the number of moves necessary to perform the rearrangement.
+
+Otherwise, print u, v, and t (1 ≤ u < v ≤ n) — the two endpoints of the new bridge, and the minimum number of statue movements needed to perform the rearrangement.
+
+If the rearrangement cannot be done no matter how the new bridge is built, print a single line containing  - 1.
+Code:
+#include<bits/stdc++.h>
+#define ll long long
+#define N 200010
+#define pb emplace_back
+using namespace std;
+vector<int> no,a[N];
+int n,p[N],q[N],x,y,s1,s2,an1,an2,an3,an4;
+bool ex=1;
+bool get(int x,int fa,int mu){
+	no.pb(x);
+	if (x==mu) return 1;
+	for (int y:a[x])
+		if (y!=fa&&get(y,x,mu))return 1;
+	no.pop_back();
+	return 0;
+}
+int dis(int x,int y){
+	no.clear();
+	get(x,0,y);
+	return no.size()-1;
+}
+void dfs(int x,int fa){
+	for (auto y:a[x])
+		if (y!=fa)dfs(y,x);
+	if (p[x]!=q[x]){
+		int s=0;
+		for (auto y:a[x])if (y!=fa&&p[y]!=q[y]) s++;
+		if (s==0){
+			an3++;
+			if (an1)an2=x;
+			else{
+				an1=x;no.clear();get(x,0,s2);
+				for (int i=0;i<no.size();i++)if (p[no[i]]==q[no[i]]){an2=an4=no[i];break;}
+			}
+		}
+	}else{
+		int s=0;
+		for (auto y:a[x])if (y!=fa&&p[y]!=q[y]) s++;
+		if (s==2){an3--;an4=x;}
+	}
+}
+int main(){
+	cin>>n;
+	for (int i=1;i<=n;i++)cin>>p[i];
+	for (int i=1;i<=n;i++)cin>>q[i];
+	for (int i=1;i<n;i++){cin>>x>>y;a[x].pb(y);a[y].pb(x);}
+	s1=0,s2=0;
+	for (int i=1;i<=n;i++){if (!p[i])s1=i;if (!q[i])s2=i;}
+	no.clear();
+	get(s1,0,s2);
+	for (int i=1;i<no.size();i++)swap(p[no[i-1]],p[no[i]]);
+	int an=1;
+	for (int i=1;i<=n;i++)if (p[i]!=q[i]) an=0;
+	if (an){cout<<"0 "<<dis(s1,s2)<<endl;return 0;}
+	dfs(s2,0);
+	if (an3!=1){cout<<"-1"<<endl;return 0;}
+	no.clear();
+	get(an1,0,an2);
+	for (int i=0;i<no.size();i++)if (no[i]==an4)no.erase(no.begin()+i);
+	int g=0;ll k=no.size();
+	for (int i=0;i<no.size();i++)if (q[no[i]]==p[no[0]])g=i;
+	for (int i=0;i<no.size();i++)if (p[no[i]]!=q[no[(i+g)%no.size()]]){cout<<"-1"<<endl;return 0;}
+	cout<<min(an1,an2)<<' '<<max(an1,an2)<<' '<<min((k+1)*(g-1)+1+dis(s1,an1)+dis(s2,an2),(k+1)*(k-g-1)+1+dis(s2,an1)+dis(s1,an2))<<endl;
+	return 0;
+}
+
