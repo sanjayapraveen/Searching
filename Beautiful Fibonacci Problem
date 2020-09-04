@@ -1,0 +1,23 @@
+The well-known Fibonacci sequence F0,F1,F2,… is defined as follows:
+
+F0=0,F1=1.
+For each i≥2: Fi=Fi−1+Fi−2.
+Given an increasing arithmetic sequence of positive integers with n elements: (a,a+d,a+2⋅d,…,a+(n−1)⋅d).
+
+You need to find another increasing arithmetic sequence of positive integers with n elements (b,b+e,b+2⋅e,…,b+(n−1)⋅e) such that:
+
+0<b,e<264,
+for all 0≤i<n, the decimal representation of a+i⋅d appears as substring in the last 18 digits of the decimal representation of Fb+i⋅e (if this number has less than 18 digits, then we consider all its digits).
+Input
+The first line contains three positive integers n, a, d (1≤n,a,d,a+(n−1)⋅d<106).
+
+Output
+If no such arithmetic sequence exists, print −1.
+
+Otherwise, print two integers b and e, separated by space in a single line (0<b,e<264).
+
+If there are many answers, you can output any of them.
+Code:
+v=3337867500
+n,a,d=map(int,input().split())
+print(v*a,v*d)
