@@ -1,0 +1,59 @@
+In a simplified version of a "Mini Metro" game, there is only one subway line, and all the trains go in the same direction. There are n stations on the line, ai people are waiting for the train at the i-th station at the beginning of the game. The game starts at the beginning of the 0-th hour. At the end of each hour (couple minutes before the end of the hour), bi people instantly arrive to the i-th station. If at some moment, the number of people at the i-th station is larger than ci, you lose.
+
+A player has several trains which he can appoint to some hours. The capacity of each train is k passengers. In the middle of the appointed hour, the train goes from the 1-st to the n-th station, taking as many people at each station as it can accommodate. A train can not take people from the i-th station if there are people at the i−1-th station.
+
+If multiple trains are appointed to the same hour, their capacities are being added up and they are moving together.
+
+The player wants to stay in the game for t hours. Determine the minimum number of trains he will need for it.
+
+Input
+The first line contains three integers n, t, and k (1≤n,t≤200,1≤k≤109) — the number of stations on the line, hours we want to survive, and capacity of each train respectively.
+
+Each of the next n lines contains three integers ai, bi, and ci (0≤ai,bi≤ci≤109) — number of people at the i-th station in the beginning of the game, number of people arriving to i-th station in the end of each hour and maximum number of people at the i-th station allowed respectively.
+
+Output
+Output a single integer number — the answer to the problem.
+Code:
+#include<bits/stdc++.h>
+using namespace std;
+#define MAXN 300
+#define maxint (1LL<<50)
+typedef long long ll;
+ll a[MAXN],b[MAXN],c[MAXN],sa[MAXN],sb[MAXN];
+ll f[MAXN][MAXN][2],g[MAXN][MAXN][2];
+int main(){
+	int n,t,k;
+	cin>>n>>t>>k;
+	for(int i=1;i<=n;i++){
+		scanf("%lld%lld%lld",&a[i],&b[i],&c[i]);
+		sa[i]=sa[i-1]+a[i];
+		sb[i]=sb[i-1]+b[i];
+	}
+	n++;
+	a[n]=c[n]=maxint;	sa[n]=a[n]+sa[n-1];
+	for(int i=1;i<=n;i++){
+		for(int j=0;j<=t;j++){
+			for(int z=0;z<=1;z++){
+				f[i][j][z]=g[i][j][z]=maxint;
+				if(z*a[i]+j*b[i]<=c[i]&&f[i-1][j][z]!=maxint){
+					f[i][j][z]=f[i-1][j][z];
+					ll v=((z*sa[i-1]+j*sb[i-1])+k-1)/k;
+					if(v*k<=z*sa[i]+j*sb[i])	g[i][j][z]=v;
+				}
+				for(int r=0;r<j;r++){
+					if(g[i][r][z]==maxint)	continue;
+					ll re=sa[i]*z+sb[i]*r-g[i][r][z]*k;
+					ll v=(max(0LL,(j-r)*b[i]+re-c[i])+k-1)/k;
+					if(v*k<=re&&f[i-1][j-r][0]!=maxint){
+						f[i][j][z]=min(f[i][j][z],g[i][r][z]+v+f[i-1][j-r][0]);
+						ll u=(sb[i-1]*(j-r)+k-1)/k;
+						if(u*k<=sb[i]*(j-r)+re-v*k)	g[i][j][z]=min(g[i][j][z],g[i][r][z]+v+u);
+					}
+				}
+			}
+		}
+	}
+	//for(int i=1;i<=t;i++)cout<<f[n][i][1]<<ends;cout<<endl;
+	cout<<f[n][t][1]<<endl;
+	return 0;
+}
