@@ -1,0 +1,57 @@
+You are given an array a of length 2n. You should process q queries on it. Each query has one of the following 4 types:
+
+Replace(x,k) — change ax to k;
+Reverse(k) — reverse each subarray [(i−1)⋅2k+1,i⋅2k] for all i (i≥1);
+Swap(k) — swap subarrays [(2i−2)⋅2k+1,(2i−1)⋅2k] and [(2i−1)⋅2k+1,2i⋅2k] for all i (i≥1);
+Sum(l,r) — print the sum of the elements of subarray [l,r].
+Write a program that can quickly process given queries.
+
+Input
+The first line contains two integers n, q (0≤n≤18; 1≤q≤105) — the length of array a and the number of queries.
+
+The second line contains 2n integers a1,a2,…,a2n (0≤ai≤109).
+
+Next q lines contains queries — one per line. Each query has one of 4 types:
+
+"1 x k" (1≤x≤2n; 0≤k≤109) — Replace(x,k);
+"2 k" (0≤k≤n) — Reverse(k);
+"3 k" (0≤k<n) — Swap(k);
+"4 l r" (1≤l≤r≤2n) — Sum(l,r).
+It is guaranteed that there is at least one Sum query.
+
+Output
+Print the answer for each Sum query.
+Code:
+#include<cstdio>
+using namespace std;
+typedef long long ll;
+ 
+int n,q,val;
+ll seg[1<<19|5];
+ 
+void qr(int &x) {scanf("%d",&x);}
+ 
+int main() {
+    scanf("%d%d",&n,&q); n=1<<n;
+    for(int i=n;i<2*n;i++) scanf("%lld",&seg[i]);
+    for(int i=n-1; i;i--) seg[i]=seg[i*2]+seg[i*2+1];
+    while(q--) {
+        int op,l,r; qr(op); qr(l);
+        if(op==1) {
+            l--; l^=val; qr(r);
+            int delta=r-seg[n+l];
+            for(int i=n+l; i;i=i/2) seg[i]+=delta;
+        }
+        else if(op==2) val^=(1<<l)-1;
+        else if(op==3) val^=1<<l;
+        else {
+            qr(r); l--; ll ans=0;
+            for(int a=n+l,b=n+r,c=val;a<b;a/=2,b/=2,c/=2) {
+                if(a&1) ans+=seg[(a++)^c];
+                if(b&1) ans+=seg[(--b)^c];
+            }
+            printf("%lld\n",ans);
+        }
+    }
+    return 0;
+}
