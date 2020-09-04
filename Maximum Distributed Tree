@@ -1,0 +1,62 @@
+You are given a tree that consists of n nodes. You should label each of its n−1 edges with an integer in such way that satisfies the following conditions:
+
+each integer must be greater than 0;
+the product of all n−1 numbers should be equal to k;
+the number of 1-s among all n−1 integers must be minimum possible.
+Let's define f(u,v) as the sum of the numbers on the simple path from node u to node v. Also, let ∑i=1n−1∑j=i+1nf(i,j) be a distribution index of the tree.
+
+Find the maximum possible distribution index you can get. Since answer can be too large, print it modulo 109+7.
+
+In this problem, since the number k can be large, the result of the prime factorization of k is given instead.
+
+Input
+The first line contains one integer t (1≤t≤100) — the number of test cases.
+
+The first line of each test case contains a single integer n (2≤n≤105) — the number of nodes in the tree.
+
+Each of the next n−1 lines describes an edge: the i-th line contains two integers ui and vi (1≤ui,vi≤n; ui≠vi) — indices of vertices connected by the i-th edge.
+
+Next line contains a single integer m (1≤m≤6⋅104) — the number of prime factors of k.
+
+Next line contains m prime numbers p1,p2,…,pm (2≤pi<6⋅104) such that k=p1⋅p2⋅…⋅pm.
+
+It is guaranteed that the sum of n over all test cases doesn't exceed 105, the sum of m over all test cases doesn't exceed 6⋅104, and the given edges for each test cases form a tree.
+
+Output
+Print the maximum distribution index you can get. Since answer can be too large, print it modulo 109+7.
+Code:
+import collections
+for _ in range(int(input())):
+    n=int(input())
+    go=collections.defaultdict(set)
+    for _ in range(n-1):
+        a,b=map(int,input().split())
+        a-=1
+        b-=1
+        go[a].add(b)
+        go[b].add(a)
+    m=int(input())
+    p=list(map(int,input().split()))
+    p.sort()
+    q=[]
+    for x in go:
+        if len(go[x])==1:
+            q.append(x)
+    node=[1]*n
+    while len(q)!=1:
+        now=q.pop()
+        parent=go[now].pop()
+        node[parent]+=node[now]
+        go[parent].remove(now)
+        if len(go[parent])==1:
+            q.append(parent)
+    for i,x in enumerate(node):
+        node[i]=x*(n-x)
+    node.sort()
+    node=node[1:]
+    while len(p)>n-1:
+        p[n-2]=p.pop()*p[n-2]%(10**9+7)
+    for i in range(-1,-len(p)-1,-1):
+        node[i]*=p[i]
+    ans=sum(node)%(10**9+7)
+    print(ans)
