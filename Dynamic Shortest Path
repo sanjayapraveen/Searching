@@ -1,0 +1,24 @@
+You are given a weighted directed graph, consisting of n vertices and m edges. You should answer q queries of two types:
+
+1 v — find the length of shortest path from vertex 1 to vertex v.
+2 c l1 l2 ... lc — add 1 to weights of edges with indices l1, l2, ..., lc.
+Input
+The first line of input data contains integers n, m, q (1 ≤ n, m ≤ 105, 1 ≤ q ≤ 2000) — the number of vertices and edges in the graph, and the number of requests correspondingly.
+
+Next m lines of input data contain the descriptions of edges: i-th of them contains description of edge with index i — three integers ai, bi, ci (1 ≤ ai, bi ≤ n, 0 ≤ ci ≤ 109) — the beginning and the end of edge, and its initial weight correspondingly.
+
+Next q lines of input data contain the description of edges in the format described above (1 ≤ v ≤ n, 1 ≤ lj ≤ m). It's guaranteed that inside single query all lj are distinct. Also, it's guaranteed that a total number of edges in all requests of the second type does not exceed 106.
+
+Output
+For each query of first type print the length of the shortest path from 1 to v in a separate line. Print -1, if such path does not exists.
+Code:
+#include<queue>
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#define REP(i,a,n)for(int i=a;i<=n;++i)
+using namespace std;
+#define N 100010
+#define ll long long
+const ll INF=1e15;struct Edge{int t,w;}e[N<<1];queue<int>g[N];ll d[N],f[N];int i,j,k,n,m,q,x,h[N];struct _{int x;_(int x):x(x){}bool operator<(const _&a)const{return d[x]>d[a.x];}};priority_queue<_>Q;vector<int>V[N];int done[N<<2];inline void Dij(){for(i=2;i<=n;i++)d[i]=INF;Q.push(1);while(!Q.empty()){x=Q.top().x;Q.pop();for(int j:V[x])if(d[e[j].t]>d[x]+e[j].w){d[e[j].t]=d[x]+e[j].w;Q.push(e[j].t);}}}int main(){scanf("%d%d%d",&n,&m,&q);REP(i,1,m){scanf("%d%d%d",&x,&e[i].t,&e[i].w);V[x].push_back(i);}Dij();REP(i,1,q){scanf("%d%d",&x,&k);if(x==1)printf("%lld\n",d[k]>=INF?-1:d[k]);else{REP(i,1,k)scanf("%d",&x),e[x].w++;REP(i,2,n)f[i]=INF;g[m=0].push(1);k=min(k,n-1);REP(i,0,m)while(!g[i].empty()){x=g[i].front();g[i].pop();if(i>f[x])continue;for(int j:V[x]){ll y=f[x]+d[x]+e[j].w-d[e[j].t];if(f[e[j].t]>y){f[e[j].t]=y;if(y<=k){g[y].push(e[j].t);if(y>m)m=y;}}}}REP(i,2,n)d[i]=min(INF,d[i]+f[i]);}}return 0;}
