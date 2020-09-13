@@ -1,0 +1,94 @@
+Let a and b be some non-negative integers. Let's define strange addition of a and b as following:
+
+write down the numbers one under another and align them by their least significant digit;
+add them up digit by digit and concatenate the respective sums together.
+Assume that both numbers have an infinite number of leading zeros.
+
+For example, let's take a look at a strange addition of numbers 3248 and 908:
+
+
+You are given a string c, consisting of n digits from 0 to 9. You are also given m updates of form:
+
+x d — replace the digit at the x-th position of c with a digit d.
+Note that string c might have leading zeros at any point of time.
+
+After each update print the number of pairs (a,b) such that both a and b are non-negative integers and the result of a strange addition of a and b is equal to c.
+
+Note that the numbers of pairs can be quite large, so print them modulo 998244353.
+
+Input
+The first line contains two integers n and m (1≤n,m≤5⋅105) — the length of the number c and the number of updates.
+
+The second line contains a string c, consisting of exactly n digits from 0 to 9.
+
+Each of the next m lines contains two integers x and d (1≤x≤n, 0≤d≤9) — the descriptions of updates.
+
+Output
+Print m integers — the i-th value should be equal to the number of pairs (a,b) such that both a and b are non-negative integers and the result of a strange addition of a and b is equal to c after i updates are applied.
+
+Note that the numbers of pairs can be quite large, so print them modulo 998244353.
+
+Example
+inputCopy
+2 3
+14
+2 4
+2 1
+1 0
+outputCopy
+15
+12
+2
+Note
+After the first update c is equal to 14. The pairs that sum up to 14 are: (0,14), (1,13), (2,12), (3,11), (4,10), (5,9), (6,8), (7,7), (8,6), (9,5), (10,4), (11,3), (12,2), (13,1), (14,0).
+
+After the second update c is equal to 11.
+
+After the third update c is equal to 01.
+Code:
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 500005;
+const int mod = 998244353;
+
+int n, m;
+char s[N];
+#define mid (l + r >> 1)
+#define ls p << 1
+#define rs p << 1 | 1
+int t[N << 2][2][2];
+void pushup(int p) {
+  for (int i = 0; i < 2; ++i)
+    for (int j = 0; j < 2; ++j)
+      t[p][i][j] = (1ll * t[ls][i][0] * t[rs][0][j] + 1ll * t[ls][i][1] * t[rs][1][j]) % mod; 
+}
+void work(int p, int x) {
+  t[p][0][0] = s[x] + 1;
+  t[p][0][1] = 1;
+  if (s[x - 1] == 1) t[p][1][0] = 9 - s[x];
+  else t[p][1][0] = 0; 
+} 
+void build(int p, int l, int r) {
+  if(l == r) return work(p, l);
+  build(ls, l, mid), build(rs, mid + 1, r);
+  pushup(p);
+}
+void update(int p, int l, int r, int x) {
+  if(l == r) return work(p, l);
+  if(mid >= x) update(ls, l, mid, x);
+  else update(rs, mid + 1, r, x);
+  pushup(p);
+}
+
+int main() {
+  scanf("%d%d%s", &n, &m, s + 1);
+  for (int i = 1; i <= n; ++i) s[i] -= '0';
+  build(1, 1, n);
+  for (int i = 1, x, y; i <= m; ++i) {
+    scanf("%d%d", &x, &y);
+    s[x] = y;
+    if(x != n) update(1, 1, n, x + 1);
+    update(1, 1, n, x);
+    printf("%d\n", t[1][0][0]);
+  }
+}   
